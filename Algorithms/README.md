@@ -1,3 +1,2 @@
-Algorithm and Data Struct \n
-Learn form Princeton Algorithm Open Source \n
-Base on Algorithm Edition 4 \n
+#Algorithm and Data Struct
+Learn form Princeton Algorithm Open Source Base on Book Algorithm Edition 4
