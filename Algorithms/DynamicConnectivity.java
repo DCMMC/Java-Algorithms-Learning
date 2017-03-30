@@ -1,5 +1,3 @@
-package com.DCMMC.Algorithms;
-
 import java.util.Random;
 
 /**
