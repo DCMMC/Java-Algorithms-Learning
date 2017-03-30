@@ -1,3 +1,5 @@
+package com.DCMMC.Algorithms;
+
 import java.util.Random;
 
 /**
@@ -129,7 +131,7 @@ public class DynamicConnectivity {
 
 
         /**
-         * Practice1:
+         * Interview Question 1 :
          * Social network connectivity.
          * Given a social network containing n members and a log file containing m timestamps at which
          * times pairs of members formed friendships, design an algorithm to determine the earliest time
@@ -144,10 +146,50 @@ public class DynamicConnectivity {
          *
          * My Answer:
          * Create a int TreeCount to store the tree counts.And its initialization value is n,i.e.All the
-         * member of id[n] is a single tree.In each union action,check if the pair of elements is connected
-         * and if their are not connected then TreeCount minus 1.At the last of union action,judge that if
+         * member of id[n] is a single tree.In each union operation,check if the pair of elements is connected
+         * and if their are not connected then TreeCount minus 1.At the last of union operation,judge that if
          * the value of TreeCount is 1,and the earliest time when all members are connected is the time when
          * it became 1.
+         */
+
+        /**
+         * Interview Question 2 :
+         * Union-find with specific canonical element. Add a method find() to the union-find data type so
+         * that find(i) returns the largest element in the connected component containing i. The operations,
+         * union(), connected(), and find() should all take logarithmic time or better.
+         *
+         * For example, if one of the connected components is {1,2,6,9}, then the find() method should return
+         * 9 for each of the four elements in the connected components.
+         *
+         *
+         * My Answer:
+         * Create a array maxElement[n] with 1 as every array element's initialization value to store each
+         * connectivity component's max element.The each element of array reflect to the id[n]'s element.
+         * We will update the maxElement when we use union operation. The operation's detial is compare the
+         * two maxElements reflect to the pair elements' rootId, and update all the two maxElements to the
+         * sum of the original values. To implement find() method, we can simply return maxElement[root(i)].
+         */
+
+        /**
+         *
+         * Interview Question 3 :
+         *
+         * Successor with delete. Given a set of N integers S={0,1,...,n−1} and a sequence of requests of
+         * the following form:
+         *
+         * Remove x from S
+         * Find the successor of x: the smallest y in S such that y≥x.
+         *
+         * design a data type so that all operations (except construction) take logarithmic time or better
+         * in the worst case.
+         *
+         *
+         * My Answer :
+         * The challenge of this question is how to relate the solution to Union-Find approach at the first
+         * place without any hints about Union-Find.
+         * Use a Non-Weighted Quick-Union with Path Compression. Remove(int x) approach is union(x,root(x)),
+         * and successor(int x) is return root(x + 1). So the remain of numbers is all the connectivity
+         * components' root element.
          */
     }
 }///:~
