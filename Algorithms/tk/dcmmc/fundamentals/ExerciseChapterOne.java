@@ -1,7 +1,8 @@
 //package tk.dcmmc.Fundamentals;
 
 import java.util.*;
-//import tk.dcmmc.fundamentals.StdDarw;
+
+import edu.princeton.cs.algs4.*;
 
 /**
 * Algorithm Chapter 1 Exercise
@@ -486,7 +487,7 @@ class ExerciseChapterOne {
 		//输出结果应该每一个都接近于n/m
 		shuffleCheck(10, 4000);
 
-		
+
 
 	}
 
