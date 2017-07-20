@@ -1,5 +1,8 @@
 //package tk.dcmmc.Fundamentals;
 
+import java.util.*;
+//import tk.dcmmc.fundamentals.StdDarw;
+
 /**
 * Algorithm Chapter 1 Exercise
 * @Author DCMMC
@@ -12,11 +15,77 @@ class ExerciseChapterOne {
 	//static int depth;
 
 	//嵌套类(静态内部类)
-	static class DepthCount {
+	private static class DepthCount {
 		//静态域变量
 		static int depth = 1;
 
 	}
+
+	//BinarySearch(嵌套类)
+	private static class BinarySearch {
+		/**
+		* Ex 1.1.29 
+		* 用二分搜索法找到数组中任意一个a的index然后再往前去找到最前面的那一个a的index(如果有的话),
+		* 返回在这个已排序数组中小于a的元素的个数
+		* @param key a int num.
+		* @param a 必须是由小到大排序好的int数组, 数组中可能会有重复的元素.
+		* @return 在这个已排序数组中小于a的元素的个数
+		*/
+		static int rank(int key, int[] a) {
+			//先调用外部类中的rank()方法来获得a中(多个)key的任意一个offset.
+			int anyOffsetInA = ExerciseChapterOne.rank(key, a);
+
+			//开始向前查找是否还有key
+			while (a[--anyOffsetInA] == key) 
+				;//空语句
+
+			return ++anyOffsetInA;
+		}
+
+		/**
+		* Ex 1.1.29 
+		* 由上面rank()得出的结果的offset开始, 向后遍历数组, 返回数组中key的个数.
+		* @param key a int num.
+		* @param a 必须是由小到大排序好的int数组, 数组中可能会有重复的元素.
+		* @return 返回数组中key的个数.
+		*/
+		static int count(int key, int[] a) {
+			//key的个数
+			int cnt = 0;
+			//数组a中第一个key的index
+			int firstIndex = rank(key, a);
+
+			while (a[firstIndex++] == key)
+				cnt++;
+
+			return cnt;
+		}
+
+	}
+
+
+	/**
+	* Ex 1.1.31
+	* 点的信息
+	*/
+	static class Point {
+		//x, y分别是点x, y轴坐标(按照Algorithm中给的那个StdDraw库)
+		//记住一定不能用static, static是所有实例中都共用一个值
+		double x;
+		double y;
+
+		//不允许用默认构造器来实例化Point
+		private Point() {
+
+		}
+
+		Point(double x, double y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+
+
 
 	/**************************************
 	* 显式的静态初始化                     *
@@ -257,7 +326,7 @@ class ExerciseChapterOne {
 		title("Ex 1.1.20");
 		o(ln(10));
 
-		//Ex1.1.22
+		//Ex 1.1.22
 		title("Ex 1.1.22");
 		int[] a = {1, 2, 3, 3, 6, 6, 7, 8, 9, 15, 33, 56, 56, 78};
 		int key = 56;
@@ -276,6 +345,77 @@ class ExerciseChapterOne {
 		*/
 		title("Ex 1.1.25");
 		o("28, 24的最大公约数是: " + gcd(28, 24));
+
+		//Ex 1.1.27
+		/**
+		* 感觉那题目逻辑问题啊, 命名只给了一个static方法而且那个方法有三个参数, 结果还调用了两个参数的一个重载版本
+		* 而且这个重载版本没有给出来.
+		*/
+
+		//Ex 1.1.29
+		title("Ex 1.1.29");
+
+		Collection<Integer> aList = new ArrayList(14);
+
+		for (Integer i : a) 
+			aList.add(i);
+
+		//就直接用Ex 1.1.22的那个数组来测试算了
+		o("数组: " + aList +"中\nkey = "+ key + " 前面有" + BinarySearch.rank(key, a) + "个元素, " + 
+			"并且key = " + key + "有" + BinarySearch.count(key, a) + "个.");
+
+		//Ex 1.1.31
+		title("Ex 1.1.31");
+
+		//n个points
+		final int N = 5;
+		//这N个点相连的概率
+		final double P = 0.56;
+
+		//画一个与画布相切的圆(画布是1.0x1.0的正方形, 中心点坐标(0.5, 0.5))
+		StdDraw.circle(0.5, 0.5, 0.5);
+
+		//每一个point在圆上相差的角度, 单位度
+		final double ANGLE = 360.0 / N;
+
+		//创建n个Points
+		//P.S. 这里只是创建了n和Point对象的引用, 这些引用全是null, 后面必须指定new出来的对象
+		Point[] points = new Point[N];
+
+		//在圆上画点
+		//设置画笔的大小为 .05, 并且设置画笔颜色为RED
+		StdDraw.setPenRadius(.05);
+		StdDraw.setPenColor(StdDraw.RED);
+
+		//第一个点的坐标为(0.5, 1.0)
+		for (int i = 0; i < N; i++) {
+
+			//设置每一个点的x, y坐标
+			points[i] = new Point(0.5 + 0.5 * Math.sin(i*ANGLE/360.0*2*Math.PI),
+								0.5 + 0.5 * Math.cos(i*ANGLE/360.0*2*Math.PI));
+
+			//画点
+			StdDraw.point(points[i].x, points[i].y);
+		}
+
+		//为连线设置画笔大小 .01, 颜色GARY
+		StdDraw.setPenColor(StdDraw.GRAY);
+		StdDraw.setPenRadius(.01);
+
+
+		//开始连线, 从N个点任取两个
+		for (int i = 0; i < N - 1; i++) {
+			for (int j = i + 1; j < N; j++) {
+				//按照P的概率返回true
+				if (StdRandom.bernoulli(P))
+					StdDraw.line(points[i].x, points[i].y, points[j].x, points[j].y);
+			}
+		} 
+
+		//Ex 1.1.34
+		//怎么感觉所有实现都要所有n个数值
+
+		
 
 	}
 
