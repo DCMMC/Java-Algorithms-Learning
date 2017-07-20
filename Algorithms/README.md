@@ -17,7 +17,7 @@
 
 #### Algorithms
 
-* [Euclid's algorithm](./tk/dcmmc/fundamentals/Algorithms/EuclidDCG.java): Computer the GCD(Greatest Common Divisor) of two nonzero integers.
+* [Euclid's algorithm](./tk/dcmmc/fundamentals/Algorithms/EuclidGCD.java): Computer the GCD(Greatest Common Divisor) of two nonzero integers.
 
 ### 1.2 Data Abstraction
 
