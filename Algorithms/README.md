@@ -1,6 +1,6 @@
 # *Algorithm (4th Edition)* (Algorithm and Data Struct)
 
-> This project include the whole implementations of this Book's Algorithms and my answers of the Exercises in this Book .
+> This project include the whole implementations of this Book's Algorithms and my solutions to the Exercises in this Book .
 
 > 本项目包含了书上的所有经典算法的实现和我对书上课后习题的解答
 
