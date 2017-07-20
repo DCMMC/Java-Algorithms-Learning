@@ -1,7 +1,0 @@
-/**
-* 欧几里德算法(aka 辗转相除法)
-* Description: 求两个非零整数的最大公约数
-*/
-class EuclidDCG {
-	
-}
