@@ -40,6 +40,25 @@ class DataAbstraction {
 		return s.length() == t.length() && s.concat(s).indexOf(t) >= 0;
 	}
 
+	/**
+	* Ex 1.2.7
+	* 一个递归方法
+	* @param s
+	* 		 字符串
+	*/
+	private static String mystery(String s) {
+		final int N = s.length();
+
+		if (N <= 1)
+			return s;
+
+		String a = s.substring(0, N / 2),
+			   b = s.substring(N / 2, N);
+
+		return mystery(b) + mystery(a);
+	}
+
+
 
 	/**************************************
      * 我的一些方法和client测试方法         *
@@ -115,6 +134,12 @@ class DataAbstraction {
 
 		o("ACDGG 和 DGGAC " + (checkCirclarRotation("ACDGG", "DGGAC") ? "是" : "不是") 
 			+ "回环变位的");
+
+		//Ex 1.2.7
+		//就是反转字符串
+		title("1.2.7");
+
+		o("\"Algorithm Java\" 递归后为: " + mystery("Algorithm Java"));
 	}
 
 }
