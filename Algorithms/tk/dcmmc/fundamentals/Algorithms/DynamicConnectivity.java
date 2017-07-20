@@ -1,4 +1,4 @@
-package com.DCMMC.Algorithms;
+//package com.DCMMC.Algorithms;
 
 import java.util.Random;
 
@@ -141,7 +141,7 @@ public class DynamicConnectivity {
          * extra space proportional to n.
          *
          * Note: these interview questions are ungraded and purely for your own enrichment. To get a hint,
-         submit a solution.
+         * submit a solution.
          *
          *
          * My Answer:
@@ -165,7 +165,7 @@ public class DynamicConnectivity {
          * My Answer:
          * Create a array maxElement[n] with 1 as every array element's initialization value to store each
          * connectivity component's max element.The each element of array reflect to the id[n]'s element.
-         * We will update the maxElement when we use union operation. The operation's detial is compare the
+         * We will update the maxElement when we use union operation. The operation's detail is compare the
          * two maxElements reflect to the pair elements' rootId, and update all the two maxElements to the
          * sum of the original values. To implement find() method, we can simply return maxElement[root(i)].
          */
