@@ -4,4 +4,6 @@
 
 > 本项目包含了书上的所有经典算法的实现和我对书上课后习题的解答
 
+>[官方网站](http://algs4.cs.princeton.edu/home/)&ensp;[官方代码下载](http://algs4.cs.princeton.edu/code/algs4.jar)&ensp;[官方测试数据下载](http://algs4.cs.princeton.edu/code/algs4-data.zip)
+
 Learn form Princeton Algorithm [Open Source](https://www.coursera.org/learn/algorithms-part1/home/welcome) Base on Book *Algorithm 4th Edition* .
