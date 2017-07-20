@@ -1,6 +1,6 @@
 # *Algorithm (4th Edition)* (Algorithm and Data Struct)
 
-> This project include the whole implementations of this Book's Algorithms and my answers of the Exercises in this Book .
+> This project include the whole implementations of this Book's Algorithms and my solutions to the Exercises in this Book .
 
 > 本项目包含了书上的所有经典算法的实现和我对书上课后习题的解答
 
@@ -20,6 +20,8 @@
 * [Euclid's algorithm](./tk/dcmmc/fundamentals/Algorithms/EuclidGCD.java): Computer the GCD(Greatest Common Divisor) of two nonzero integers.
 
 ### 1.2 Data Abstraction
+
+[**Exercise**](./tk/dcmmc/fundamentals/Exercises/DataAbstraction.java)
 
 # 学习笔记 Notebook
 
