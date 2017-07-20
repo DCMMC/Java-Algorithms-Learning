@@ -9,3 +9,10 @@
 # Contents
 ---
 
+## Chapter 1 Fundamentals
+
+### 1.1 Basic Programming Model
+
+[**Exercise**](./tk/dcmmc/fundamentals/)
+
+
