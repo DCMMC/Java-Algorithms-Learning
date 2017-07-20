@@ -13,6 +13,13 @@
 
 ### 1.1 Basic Programming Model
 
-[**Exercise**](./tk/dcmmc/fundamentals/)
+[**Exercise**](./tk/dcmmc/fundamentals/Exercises/BasicProgModel.java)
+
+#### Algorithms
+
+* [Euclid's algorithm](./tk/dcmmc/fundamentals/Algorithms/EuclidGCD.java): Computer the GCD(Greatest Common Divisor) of two nonzero integers.
+
+### 1.2 Data Abstraction
+
 
 
