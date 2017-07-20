@@ -239,6 +239,71 @@ class ExerciseChapterOne {
 			return gcd(q, p % q);
 	}
 
+	/**
+	* Ex 1.1.36
+	* 打乱数组
+	* @param a 要打乱的数组
+	*/
+	private static void shuffle(int[] a) {
+		final int N = a.length;
+
+		//将a[i]和a[i] ... a[N-1]
+		for (int i = 0; i < N; i++) {
+			int r = i + StdRandom.uniform(N-i);
+
+			int temp =  a[i];
+			a[i] = a[r];
+			a[r] = temp;
+		}
+	}
+
+	/**
+	* Ex 1.1.36
+	* 乱序检查
+	* @param m 数组大小
+	* @param n 打乱的次数
+	* @throws IllegalArgumentException m, n都必须是大于0的整数
+	*/
+	private static void shuffleCheck(int m, int n) {
+		//检查参数
+		if (m == 0 || n == 0)
+			throw new IllegalArgumentException("m, n都必须是大于0的整数");
+
+		//初始化存储结果的数组
+		int[][] resultArray = new int[m][m];
+
+		//打乱n次, 而且每次打乱之前都要初始化数组为int[i] = i.
+		for (int i = 0; i < n; i++) {
+			//初始化数组为int[i] = i那种
+			int[] array = new int[m];
+			for(int j = 0; j < m; j++)
+				array[j] = j;
+
+			//打乱数组
+			shuffle(array);
+
+			//统计打乱之后的元素都落在了哪里
+			for (int j = 0; j < m; j++) {
+				resultArray[j][array[j]]++;
+			}
+
+		
+			}
+
+			//输出结果
+			o("(i, j)表示i位置上的元素在打乱之后落在j位置上的次数");
+			for (int i = 0; i < m; i++) {
+				for (int j = 0;j < m; j++) {
+					System.out.printf("%5d", resultArray[i][j]);
+				}
+
+				o("");
+
+		}
+
+
+	}
+
 
 
 	/**************************************
@@ -414,6 +479,12 @@ class ExerciseChapterOne {
 
 		//Ex 1.1.34
 		//怎么感觉所有实现都要所有n个数值
+
+		//Ex 1.1.36
+		title("Ex 1.1.36");
+
+		//输出结果应该每一个都接近于n/m
+		shuffleCheck(10, 4000);
 
 		
 
