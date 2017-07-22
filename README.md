@@ -33,18 +33,17 @@ runJava.bat: 编译加运行(不能自定义参数)
 @ECHO OFF
 cd %~dp1
 ECHO Compiling %~nx1.......
-IF EXIST %~n1.class (
-DEL %~n1.class
+IF EXIST %~dnp1.class (
+DEL %~dnp1.class
 )
-
 javac -encoding UTF-8 %~f1
-
 IF EXIST %~dnp1.class (
 ECHO -----------OUTPUT-----------
-REM 用我编写的LoadAnyClass程序来加载class文件, 这样就可以解决原来用java只能直接运行不含有package语句的程序
-cd /D %~dp0
-java LoadAnyClasses %~dnp1.class
-
+REM 用我编写的LoadAnyClass程序来加载class文件,这样就可以解决原来用java只能直接运行不含有package语句的程序
+cd %~dp0
+REM 我也不知道为什么,必须要指定当前目录为CLASSPATH,才不会报错IllegalAccessError
+REM 好像IllegalAccessError是跟ClassLoader前后不一样之类的有关的异常.
+java -classpath "." LoadAnyClasses %~dnp1.class
 REM cd %~dp1
 REM java %~n1
 )
@@ -52,7 +51,7 @@ REM java %~n1
 
 runJavaCmd.bat: 编译然后保留cmd窗口让用户自己运行
 
-```
+``` bat
 @echo off
 Rem 不显示@后面的命令，echo off表示关闭命令的回显
 cd %~dp1
@@ -93,7 +92,7 @@ fi
 > P.S. 如果你想编译所有的Java文件，需要将第二行的$1.java替换成*.java
 
 `LoadAnyClasses`是我自己用Java写的一个能够加载任意class字节码文件的小程序
-[程序源码]()
+[程序源码](https://github.com/DCMMC/Java/blob/master/Algorithms/tk/dcmmc/LoadAnyClasses.java)
 
 ### 将上述小脚本放入JDK的bin目录下(或者其他放入$Path的目录)
 
@@ -129,6 +128,8 @@ MyJava_SublimeConsole.sublime-build:
 > 因为Sublime Text3保存源码的默认格式是UTF-8，所以需要将"encoding": 设置为UTF-8
 
 ### 重新打开Sublime Text3, 在Tools -> Build System中选择要用的编译脚本, 按Ctril+B编译运行.
+
+> 上述所有文件均可在[Workspace]()中找到
 
 ## 笔记
 
