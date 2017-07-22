@@ -1,3 +1,5 @@
+package tk.dcmmc.fundamentals.Exercises;
+
 /**
 * 本文件包括Exercise 1.2中部分习题的解答
 * Created by DCMMC on 2017/7/20
