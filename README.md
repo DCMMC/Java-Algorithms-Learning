@@ -93,7 +93,7 @@ fi
 > P.S. 如果你想编译所有的Java文件，需要将第二行的$1.java替换成*.java
 
 `LoadAnyClasses`是我自己用Java写的一个能够加载任意class字节码文件的小程序
-[程序源码]()
+[程序源码](https://github.com/DCMMC/Java/blob/master/Algorithms/tk/dcmmc/LoadAnyClasses.java)
 
 ### 将上述小脚本放入JDK的bin目录下(或者其他放入$Path的目录)
 
@@ -129,6 +129,8 @@ MyJava_SublimeConsole.sublime-build:
 > 因为Sublime Text3保存源码的默认格式是UTF-8，所以需要将"encoding": 设置为UTF-8
 
 ### 重新打开Sublime Text3, 在Tools -> Build System中选择要用的编译脚本, 按Ctril+B编译运行.
+
+> 上述所有文件均可在[Workspace]()中找到
 
 ## 笔记
 
