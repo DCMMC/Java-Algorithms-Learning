@@ -6,10 +6,6 @@ package tk.dcmmc.fundamentals.Exercises;
 * Finished on 2017/7/
 */
 
-//因为是sublime text3的编译脚本, 所以不能有package语句,不然的话java就会找"./tk/.../*.class"
-//然而class文件就在当前目录, 所以只能用默认缺省的包名
-//package tk.dcmmc.fundamentals.Exercises;
-
 //导入随书配套使用的库
 //import edu.princeton.cs.algs4.*;
 import edu.princeton.cs.algs4.StdRandom;
@@ -163,7 +159,6 @@ public class DataAbstraction {
         }   
 
 
-
         /**************************************
         * Public Methods                      *
         **************************************/
@@ -173,9 +168,30 @@ public class DataAbstraction {
         *        要加上的那个Rational
         * @return 
         *        this + b得到的新的Rational, 这个新的Rational为最简分数
+        *        如果溢出的话, 就返回null
         */
         public Rational plus(Rational b) {
-            return null;
+            //先找到该Rational和b的分母的gcd, 然后求出他们分母的最简形式的乘积再乘以gcd.
+            int gcdOfThem = gcd(this.DENOMINATOR , b.getDenominator());
+            int thisDenominatorIrreduced = this.DENOMINATOR / gcdOfThem;
+            int thatDenominatorIrreduced = b.getDenominator() / gcdOfThem;
+
+            //这两个分母的最小公倍数(LCM), 作为分母, 防止溢出, 先用long存着
+            long lcmOfThem = gcdOfThem * thisDenominatorIrreduced * thatDenominatorIrreduced;
+
+            //通分后分子并且加起来, 防止溢出, 先用long存着
+            long sumNumerator = this.getNumerator() * thatDenominatorIrreduced +
+                                b.getNumerator() * thisDenominatorIrreduced;
+
+            //检验是否溢出
+            if (isOverflow(lcmOfThem, sumNumerator))
+                return null;
+
+            //再把结果化简一下
+            @SuppressWarnings("unchecked")
+            int[] irreducedResults = irreducible((int)sumNumerator, (int)lcmOfThem);
+            
+            return new Rational(irreducedResults[0], irreducedResults[1]);
         }
 
         /**
@@ -186,7 +202,7 @@ public class DataAbstraction {
         *        this - b得到的新的Rational, 这个新的Rational为最简分数
         */
         public Rational minus(Rational b) {
-            return null;
+            return plus(setNumerator(-b.getNumerator()));
         }
 
         
@@ -196,31 +212,72 @@ public class DataAbstraction {
         *        要乘以的那个Rational
         * @return 
         *        this * b得到的新的Rational, 这个新的Rational为最简分数
+        *        如果存储的数字太大溢出了, 就返回null
         */
-        public Rational times(Rational b) {
-            //可能
-            int tmpNumerator = this.getNumerator() * b.getNumerator();
-            int tmpDenominator = this.getDenominator() * b.getDenominator();
+        public Rational times(Rational b)  {
+            //可能会溢出, 所以先放在long里面
+            long tmpNumerator = this.getNumerator() * b.getNumerator();
+            long tmpDenominator = this.getDenominator() * b.getDenominator();
 
-            
+            //先为存储乘积之后的分子分母的变量初始化
+            int timedNumerator = 0;
+            int timedDenominator = 1;
 
-            return new Rational(tmpNumerator, tmpDenominator);
+            //验证是否溢出
+            if (isOverflow(tmpNumerator, tmpDenominator))
+            {
+                //溢出处理
+                return null;
+            } else {
+                timedNumerator = (int) tmpNumerator;
+                timedDenominator = (int) tmpDenominator;
+            }
+
+            int[] irreducedResults = irreducible(timedNumerator, timedDenominator);
+
+            return new Rational(irreducedResults[0], irreducedResults[1]);
         }
 
         /**
         * 该Rational与b的商
+        * 实现起来和times()差不多
         * @param b
-        *        要除以的那个Rational
+        *        要除以的那个Rational, b的分子不能为0
         * @return 
         *        this / b得到的新的Rational, 这个新的Rational为最简分数
+        *        如果存储的数字太大溢出了, 就返回null
         */
         public Rational divides(Rational b) {
-            return null;
+            //b的分子不能为0
+            if (b.getNumerator() == 0)
+                return null;
+
+            //可能会溢出, 所以先放在long里面
+            long tmpNumerator = this.getNumerator() * b.getDenominator();
+            long tmpDenominator = this.getDenominator() * b.getNumerator();
+
+            //先为存储乘积之后的分子分母的变量初始化
+            int timedNumerator = 0;
+            int timedDenominator = 1;
+
+            //验证是否溢出
+            if (isOverflow(tmpNumerator, tmpDenominator))
+            {
+                //溢出处理
+                return null;
+            } else {
+                timedNumerator = (int) tmpNumerator;
+                timedDenominator = (int) tmpDenominator;
+            }
+
+            int[] irreducedResults = irreducible(timedNumerator, timedDenominator);
+
+            return new Rational(irreducedResults[0], irreducedResults[1]);
         }
 
         /**
         * 比较that和该Rational是否相等
-        * @param that
+        * @param obj
         *        要比较的那个Rational
         * @return 
         *        如果that和该Rational表示的值一样就返回true
@@ -251,7 +308,28 @@ public class DataAbstraction {
         @Override
         public String toString() {
             return "该有理数为 " + getNumerator() + " / " + getDenominator() + "\n" +
-                    "(近似)值为" + getNumerator() / getDenominator();
+                    "(近似)值为" + (1.0 * getNumerator()) / getDenominator();
+        }
+
+        /**
+        * 设置分子
+        * @param numerator 分子
+        * @return 新的Rational
+        */
+        public Rational setNumerator(int numerator) {
+            return new Rational(numerator, this.DENOMINATOR);
+        }
+
+        /**
+        * 设置分母
+        * @param denominator 分母, 不能为0
+        * @return 新的Rational, denominator为0就返回null
+        */
+        public Rational setDenominator(int denominator) {
+            if (denominator == 0)
+                return null;
+            else
+                return new Rational(this.NUMERATOR, denominator);
         }
 
         /**
@@ -271,6 +349,7 @@ public class DataAbstraction {
         public int getDenominator() {
             return this.DENOMINATOR;
         }
+
 
 
         /**************************************
@@ -300,14 +379,30 @@ public class DataAbstraction {
         *        
         */
         private static int[] irreducible(int a, int b) throws IllegalArgumentException {
-            int tmp = 1;
-            while ((tmp = gcd(a, b)) != 1) {
-                a /= tmp;
-                b /= tmp;
+            //校验参数
+            if (a == 0 || b == 0)
+                throw new IllegalArgumentException("参数不能为0");
+
+            //用欧几里德算法, 一直同除以最大公倍数直到这两个数互质
+            int gcdOfThem = gcd(a, b);
+
+
+            return new int[] {a / gcdOfThem, b / gcdOfThem};
+        }
+
+        /**
+        * 判断多个Long参数是否溢出Integer范围
+        * @param ints
+        *           要检验是否溢出Integer范围的多个Long参数
+        * @return 都没溢出就返回true
+        */
+        private static boolean isOverflow(Long... ints) {
+            for (Long l : ints) {
+                if (l > Integer.MAX_VALUE || l < Integer.MIN_VALUE) 
+                    return true;
             }
 
-
-            return new int[] {a, b};
+            return false;
         }
 
     }
@@ -455,10 +550,11 @@ public class DataAbstraction {
         }
         o(va);
 
-        //Ex 1.2.16 & Ex 1.2.17
+        //Ex 1.2.16 & Ex 1.2.17 感觉用断言来判断还不如抛异常
         title("Ex 1.2.16&17");
-        
+        //Test
+        o( (new Rational(3, 10).plus(new Rational(5, 14))).toString() );
         
     }
 
-}
+}///~

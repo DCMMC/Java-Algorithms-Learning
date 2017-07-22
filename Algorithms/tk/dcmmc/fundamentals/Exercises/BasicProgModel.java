@@ -4,7 +4,7 @@
  * Finished on 2017/7/20
  */
 
-//因为是sublime text3的编译脚本, 所以不用管包的相对路径和classpath的问题
+
 package tk.dcmmc.fundamentals.Exercises;
 
 import java.util.*;
