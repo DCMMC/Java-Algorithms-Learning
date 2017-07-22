@@ -10,7 +10,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+//package edu.princeton.cs.algs4;
 
 /**
  *  The {@code WeightedQuickUnionUF} class represents a <em>union–find data type</em>

@@ -1,4 +1,5 @@
-package tk.dcmmc.fundamentals.Algorithms;
+package edu.princeton.cs.algs4;
+//package tk.dcmmc.fundamentals.Algorithms;
 
 /**用数学归纳法证明欧几里德算法能够求出两个非负数的最大公约数
 * 首先证明引理 gcd(a, b) = gcd(b, a mod b)
