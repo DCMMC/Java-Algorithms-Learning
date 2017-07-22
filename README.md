@@ -56,7 +56,7 @@ REM java %~n1
 
 runJavaCmd.bat: 编译然后保留cmd窗口让用户自己运行
 
-```
+``` bat
 @echo off
 Rem 不显示@后面的命令，echo off表示关闭命令的回显
 cd %~dp1
