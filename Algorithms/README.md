@@ -23,6 +23,18 @@
 
 [**Exercise**](./tk/dcmmc/fundamentals/Exercises/DataAbstraction.java)
 
+#### Algorithms
+
+* null
+
+### 1.3 Bags, Queues and Stacks
+
+[**Exercise**](./tk/dcmmc/fundamentals/Exercises/)
+
+#### Algorithms
+
+---
+
 # 学习笔记 Notebook
 
 [算法 Algorithm](https://github.com/DCMMC/Markdown_Notes/blob/master/%E7%AE%97%E6%B3%95%20Algorithm.md)
