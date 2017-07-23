@@ -554,7 +554,10 @@ public class DataAbstraction {
         title("Ex 1.2.16&17");
         //Test
         o( (new Rational(3, 10).plus(new Rational(5, 14))).toString() );
-        
+
+        //Debug... for my LoadAnyClasses
+        System.out.println( new DataAbstraction().getClass().getPackage() );
+        o( StdDraw.class.getPackage() );
     }
 
 }///~

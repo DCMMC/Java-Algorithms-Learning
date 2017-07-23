@@ -2,16 +2,15 @@
 cd %~dp1
 ECHO Compiling %~nx1.......
 IF EXIST %~dnp1.class (
-ECHO DEL %~dnp1.class
 DEL %~dnp1.class
 )
 javac -encoding UTF-8 %~f1
 IF EXIST %~dnp1.class (
 ECHO -----------OUTPUT-----------
-REM ç”¨æˆ‘ç¼–å†™çš„LoadAnyClassç¨‹åºæ¥åŠ è½½classæ–‡ä»¶,è¿™æ ·å°±å¯ä»¥è§£å†³åŸæ¥ç”¨javaåªèƒ½ç›´æ¥è¿è¡Œä¸å«æœ‰packageè¯­å¥çš„ç¨‹åº
-cd %~dp0
-REM æˆ‘ä¹Ÿä¸çŸ¥é“ä¸ºä»€ä¹ˆ,å¿…é¡»è¦æŒ‡å®šå½“å‰ç›®å½•ä¸ºCLASSPATH,æ‰ä¸ä¼šæŠ¥é”™IllegalAccessError
-REM å¥½åƒIllegalAccessErroræ˜¯è·ŸClassLoaderå‰åä¸ä¸€æ ·ä¹‹ç±»çš„æœ‰å…³çš„å¼‚å¸¸.
+REM ÓÃÎÒ±àĞ´µÄLoadAnyClass³ÌĞòÀ´¼ÓÔØclassÎÄ¼ş,ÕâÑù¾Í¿ÉÒÔ½â¾öÔ­À´ÓÃjavaÖ»ÄÜÖ±½ÓÔËĞĞ²»º¬ÓĞpackageÓï¾äµÄ³ÌĞò
+cd /D %~dp0
+REM ÎÒÒ²²»ÖªµÀÎªÊ²Ã´,±ØĞëÒªÖ¸¶¨µ±Ç°Ä¿Â¼ÎªCLASSPATH,²Å²»»á±¨´íIllegalAccessError
+REM ºÃÏñIllegalAccessErrorÊÇ¸úClassLoaderÇ°ºó²»Ò»ÑùÖ®ÀàµÄÓĞ¹ØµÄÒì³£.
 java -classpath "." LoadAnyClasses %~dnp1.class
 REM cd %~dp1
 REM java %~n1

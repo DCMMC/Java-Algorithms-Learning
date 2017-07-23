@@ -4,7 +4,6 @@
  * Finished on 2017/7/20
  */
 
-
 package tk.dcmmc.fundamentals.Exercises;
 
 import java.util.*;
@@ -19,7 +18,7 @@ import edu.princeton.cs.algs4.*;
  *
  */
 
-class BasicProgModel {
+public class BasicProgModel {
     /**************************************
      * 域变量                              *
      **************************************/
