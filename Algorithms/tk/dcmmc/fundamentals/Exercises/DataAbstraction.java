@@ -3,13 +3,11 @@ package tk.dcmmc.fundamentals.Exercises;
 /**
 * 本文件包括Exercise 1.2中部分习题的解答
 * Created by DCMMC on 2017/7/20
-* Finished on 2017/7/
+* Finished on 2017/7/23
 */
 
 //导入随书配套使用的库
-//import edu.princeton.cs.algs4.*;
-import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.*;
 
 import tk.dcmmc.fundamentals.Algorithms.EuclidGCD;
 
@@ -465,7 +463,7 @@ public class DataAbstraction {
 
     /**
      * 那个控制台输出的语句太长啦, 搞个方便一点的.
-     * @param s 要输出的String.
+     * @param obj 要输出的String.
      * @throws IllegalArgumentException 参数不能为空
      */
     private static void o(Object obj) throws IllegalArgumentException {
@@ -556,8 +554,9 @@ public class DataAbstraction {
         o( (new Rational(3, 10).plus(new Rational(5, 14))).toString() );
 
         //Debug... for my LoadAnyClasses
-        System.out.println( new DataAbstraction().getClass().getPackage() );
-        o( StdDraw.class.getPackage() );
+        //System.out.println( new DataAbstraction().getClass().getPackage() );
+        //o( StdDraw.class.getPackage() );
+
     }
 
 }///~

@@ -322,7 +322,7 @@ public class BasicProgModel {
 
     /**
      * 那个控制台输出的语句太长啦, 搞个方便一点的.
-     * @param s 要输出的String.
+     * @param obj 要输出的String.
      * @throws IllegalArgumentException 参数不能为空
      */
     private static void o(Object obj) throws IllegalArgumentException {

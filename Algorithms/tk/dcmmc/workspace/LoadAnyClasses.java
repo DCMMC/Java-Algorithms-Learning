@@ -1,4 +1,4 @@
-//package tk.dcmmc.workspace;
+package tk.dcmmc.workspace;
 
 import java.io.File;
 import java.io.FileInputStream;

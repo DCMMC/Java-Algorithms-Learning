@@ -9,5 +9,3 @@ javac -encoding UTF-8 %~nx1
 IF EXIST %~n1.class (
 start cmd.exe dir
 )
-ECHO .
-PAUSE
