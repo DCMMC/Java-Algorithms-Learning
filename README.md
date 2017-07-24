@@ -63,8 +63,6 @@ javac -encoding UTF-8 %~nx1
 IF EXIST %~n1.class (
 start cmd.exe dir
 )
-ECHO .
-PAUSE
 ```
 > bat中目录变量的意思: [10 DOS Batch tips](https://weblogs.asp.net/jongalloway/top-10-dos-batch-tips-yes-dos-batch)
 Linux/macOS:
