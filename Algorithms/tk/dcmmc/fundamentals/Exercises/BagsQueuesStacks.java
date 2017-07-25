@@ -1,17 +1,256 @@
 package tk.dcmmc.fundamentals.Exercises;
 
 import tk.dcmmc.fundamentals.Algorithms.Stack;
+import tk.dcmmc.fundamentals.Algorithms.DoubleLinkedList;
 import java.util.Scanner;
+import java.util.LinkedHashMap;
 
 /**
-* 本文件包括Exercise 1.3中部分习题的解答
-* Created by DCMMC on 2017/7/23
-* Finished on 2017/7/
-* @Author DCMMC
-* @since 1.5
-*/
+ * 本文件包括Exercise 1.3中部分习题的解答
+ * Created by DCMMC on 2017/7/24
+ * Finished on 2017/7/
+ * @author DCMMC
+ * @since 1.5
+ */
 public class BagsQueuesStacks {
-	/**************************************
+    /**
+    * 用于Ex 1.3.30的嵌套类
+    */
+    private static class Node<Item> {
+        Item item;
+        Node next;
+        Node (Item item) {
+            this.item = item;
+        }
+    }
+
+    /**************************************
+     * 习题要用到的方法                     *
+     **************************************/
+    /**
+     * Ex 1.3.9
+     * 为一个缺少所有左括号的算术表达式添加左括号
+     * @param expression
+     *           要添加左括号的表达式
+     * @return result
+     */
+    private static String addLeftParentheses(String expression) {
+        Scanner sc = new Scanner(expression);
+
+        //记录装有输入解析出来的所有token的Stack
+        DoubleLinkedList<String> tokens = new DoubleLinkedList<>();
+
+        //暂存输入的单个token
+        String inputToken;
+
+        //暂时只处理小括号
+        String rightParentheses = ")";
+        String leftParentheses = "(";
+
+        //先输入所有的tokens
+        while (sc.hasNext() && (inputToken = sc.next()) != null) {
+            tokens.addLast(inputToken);
+            if (inputToken.equals(rightParentheses)) {
+                //添加一个"("
+
+                //如果解析到了")", 就开始在tokens中开始查找"("
+                //暂存弹出来的这些tokens
+                Stack<String> tmpStoreTokens = new Stack<>();
+
+                //当前token
+                String tmpToken;
+
+                //记录需要查找的算子个数
+                int elementCnt = 0;
+
+                while ( (tmpToken = tokens.popLast()) != null) {
+                    if (tmpToken.equals(rightParentheses)) {
+                        //放入暂存Stack, 并且要找的算子element又要加三个
+                        tmpStoreTokens.push(tmpToken);
+                        elementCnt += 3;
+                    } else {
+                        //那就只剩下左括号, 运算符和数值了
+                        //遇到左括号, 这个左括号包括起来的算子被找到, 所以elementCnt要减一
+                        if (--elementCnt == 0) {
+                            //如果正好知道这个算子就所有要找的算子都被找到了, 也就是要在这个算子左边加上一个左括号了
+                            //先往tokens加一个"(", 然后把暂存Stack中的所有tokens推回原Stack
+                            tokens.addLast(leftParentheses);
+                            //把当前tmpToken(也就是"(")也推回去
+                            tokens.addLast(tmpToken);
+                            for (String t : tmpStoreTokens)
+                                tokens.addLast(t);
+                            break;
+                        } else {
+                            //否则继续放在暂存Stack中
+                            tmpStoreTokens.push(tmpToken);
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+        //准备输出
+        String resultExpression = "";
+
+        for (String t : tokens)
+            resultExpression += t + " ";
+
+        return resultExpression;
+    }
+
+    /**
+     * Ex 1.3.10
+     * 把中序算术表达式变成后序(没有括号的)
+     * e.g. ( 1 + 2 ) * 6 =>  1 2 + 6 *
+     * 不做算术表达式正确性检查
+     * @param exp
+     *           原中序算术表达式
+     * @return result.
+     */
+    private static String infixToPostfix(String exp) {
+        Stack<String> ops = new Stack<>();
+
+        //String exp = "1 + ( 2 + 3 ) / 88 - ( ( 10 * 3 ) / ( 2 - 3 ) )";
+
+        //exp可以是没有省略任何括号的表达式, 也可以是有优先级和括号相混的情况
+
+        //存储几个运算符的优先级
+        LinkedHashMap<String, Integer> priority = new LinkedHashMap<>();
+
+        //"("优先级最低
+        priority.put("(", 1);
+        //+ - 优先级为2
+        priority.put("+", 2);
+        priority.put("-", 2);
+        priority.put("*", 3);
+        priority.put("/", 3);
+
+
+        Scanner sc = new Scanner(exp);
+
+        String postfixExp = "";
+
+        while (sc.hasNext()) {
+            String s = sc.next();
+            switch (s) {
+                case "(":
+                    ops.push(s);
+                    break;
+                case ")":
+                    postfixExp += ops.pop() + " ";
+                    //去掉ops中对应的那个"("
+                    ops.pop();
+                    break;
+                case "+":
+                case "-":
+                case "*":
+                case "/":
+                    String lastOperator = ops.pop();
+                    //如果ops中还有一个待配对或者多个的运算符, 而且那个运算符的优先级还大于等于当前运算符,
+                    //就先把原来的那那些运算符抛出, e.g., 1 + 2 * 3 + 6这种情况
+                    while (lastOperator != null && priority.get(s) <= priority.get(lastOperator)) {
+                        postfixExp += lastOperator + " ";
+                        lastOperator = ops.pop();
+                    }
+
+                    //如果这个lastOperator非空且优先级小于当前运算符, 还得把这个运算符放回ops
+                    if (lastOperator != null)
+                        ops.push(lastOperator);
+
+                    //把当前运算符加入到ops中
+                    ops.push(s);
+                    break;
+                default:
+                    //如果是数值
+                    postfixExp += s + " ";
+            }
+        }
+
+        //如果还有运算符元素在ops里面, 比如exp是"1 + 2 * 3 + 4"的情况
+        String remainsOp;
+        while ( (remainsOp = ops.pop()) != null)
+            postfixExp += remainsOp + " ";
+
+        return postfixExp;
+    }
+
+    /**
+     * Ex 1.3.11
+     * 由给出的后序表达式, 计算结果
+     * @param postfixExpression, 不对该表达式的格式正确性做判断
+     * @return 该后序表达式的值
+     */
+    private static Double evaluatePostfix(String postfixExpression) {
+        Scanner sc = new Scanner(postfixExpression);
+
+        String token;
+        Stack<String> vals = new Stack<>();
+
+        while (sc.hasNext() && (token = sc.next()) != null) {
+            switch (token) {
+                case "+" :
+                    vals.push("" + (Double.parseDouble(vals.pop()) + Double.parseDouble(vals.pop())) );
+                    break;
+                case "-" :
+                    Double val2 = Double.parseDouble(vals.pop());
+                    Double val1 = Double.parseDouble(vals.pop());
+                    vals.push( "" + (val1 - val2) );
+                    break;
+                case "*" :
+                    vals.push("" + (Double.parseDouble(vals.pop()) * Double.parseDouble(vals.pop())) );
+                    break;
+                case "/" :
+                    val2 = Double.parseDouble(vals.pop());
+                    val1 = Double.parseDouble(vals.pop());
+                    vals.push( "" + (val1 / val2) );
+                    break;
+                //如果是数值
+                default  : vals.push(token);
+                    break;
+            }
+        }
+
+
+        return Double.parseDouble(vals.pop());
+    }
+
+    /**
+    * Ex 1.3.30
+    * 将链表反转并返回链表的首个结点
+    * 使用(中)递归的方法处理, 要好好的慢慢的理解这个递归的原理.
+    * @param first
+    *           要反转的链表的首结点.
+    * @return 反转之后的链表的首结点
+    */
+    private Node reverse(Node first) {
+        //如果链表是空的, 否则, 递归开始, 假设该链表共有N个Node
+        if (first == null)
+            return null;
+
+        //这是递归到了最后一个结点的时候(只有在第N次调用reverse才会使用这个), 也就是reverse(lastNode) == lastNode.
+        if (first.next == null)
+            return first;
+
+        //second就是当前参数表示的结点在原来的链表中的下一个结点.
+        //first在第几次调用reverse()就是在原链表中的第几个结点
+        Node second = first.next;
+        //到下面这条语句最后一次解析的时候(也就是在N-1次调用reverse()的时候), reset就是second就是lastNode,
+        //first就是lastNode的上一个Node
+        Node reset = reverse(second);
+        //第一次访问下列语句的时候, 也就是第N-1次调用reverse()的时候, 正在小心的将first(Node(N-1))和second(Node(N))互换
+        //第二次访问下列语句的时候, 也就是第N-2次调用reverse()的时候, 正在将first(Node(N-2))和second(Node(N-1))互换,
+        //这时候Node(N)->Node(N-1)->Node(N-2)->null, 且同时有Node(1)->Node(2)->...->Node(N-2)
+        //然后一直到第N-1次访问下列语句, 也就是第1次调用reverse()的时候, 链表状态就是Node(N)->...->Node(1)了.
+        second.next = first;
+        first.next = null;
+
+        //reset一直都是Node(N), 也就是最后反序之后的第一个结点.
+        return reset;
+    }
+
+    /**************************************
      * 我的一些方法和client测试方法         *
      **************************************/
 
@@ -27,39 +266,39 @@ public class BagsQueuesStacks {
         System.out.println(obj);
     }
 
-      /**
+    /**
      * 那个控制台输出的语句太长啦, 搞个方便一点的.
      * 重载的一个版本, 不接受任何参数, 就是为了输出一个回车.
      */
     private static void o() {
-        System.out.println();       
+        System.out.println();
     }
 
 
     /**
      * 那个控制台输出的语句太长啦, 搞个方便一点的.
      * 格式化输出.
-     * @param format 
+     * @param format
      *        a format string.
-     * @param args 
+     * @param args
      *        由format中格式说明符指定的内容
-     * @throws 
+     * @throws
      *        NullPointerException format不能为null
      */
     private static void of(String format, Object... args) {
         if (format == null)
             throw new NullPointerException("第一个参数不允许为空");
 
-        System.out.printf(format, args);       
+        System.out.printf(format, args);
     }
-   
+
 
     /**
      * 为每道题的输出前面加一行Title, 这样看起来舒服一点
      * @param exName 题目名称
      */
     private static void title(String exName) {
-        final int LEN = 40;
+        final int LEN = 80;
         String titleStr = "";
 
         int prefixLen = (LEN - exName.length()) / 2;
@@ -73,80 +312,49 @@ public class BagsQueuesStacks {
 
         o("\n" + titleStr + "\n");
     }
-	/**
-	* Test Client
-	* @param args
-	* 			command-line arguments.
-	*/
-	public static void main(String[] args) {
-		/* Dijkstra双栈算术表达式求值算法 */
-		title("Dijkstra双栈算术表达式求值算");
+    /**
+     * Test Client
+     * @param args
+     *          command-line arguments.
+     */
+    public static void main(String[] args) {
+        //Ex 1.3.3
+        //自己手动模拟一遍就能知道答案
+        //答案: b(应该是...910而不是...901) 就看了下a, b, 其他就不去看了, 反正原理差不多
 
-        System.out.println("输入一行算术表达式, 空行回车或者Ctrl+Z结束本程序.");
+        //Ex 1.3.4
+        //解法: 把所有的左括号放在Stack left中, 当遇到右括号的时候, 从left弹出来, 对比是否正确
 
-        Stack<String> ops = new Stack<>();
-        Stack<Double> vals = new Stack<>();
+        //Ex 1.3.9
+        title("Ex 1.3.9");
 
-        Scanner sc = new Scanner(System.in);
+        //Demo Input 必须确保输入格式正确
+        String demoIn = "1 + 2 ) * 3 - 4 ) * 5 - 6 ) ) )";
 
-        while (sc.hasNextLine()) {
-            //nextLine会读取回车, 但是回车的内容不会成为返回的字符串的一部分.
-            String line = sc.nextLine();
+        o(addLeftParentheses(demoIn));
 
-            if (line.equals("")) {
-                System.out.println("End of Reading.");
-                return;
-            } else {
-                //从这一行中读取
-                Scanner scInLine = new Scanner(line);
+        //Ex 1.3.10
+        //InfixToPostfix
+        title("Ex 1.3.10");
 
-		        /* 算术表达式示例: ( 1 + ( ( 2 + 3 ) * ( 4 * 5 ) ) ) */
-                while (scInLine.hasNext()) {
-                    //读取字符串
-                    String str = scInLine.next();
+        o(infixToPostfix("1 + 2 * 3"));
+        //输出应该是 1 2 3 + 88 / + 10 3 * 2 3 - / -
+        o(infixToPostfix("1 + ( 2 + 3 ) / 88 - ( ( 10 * 3 ) / ( 2 - 3 ) )"));
+        //A B + C D + *
+        o(infixToPostfix(" A + B ) * ( C + D )"));
+        //10 3 5 * 16 4 - / +
+        o(infixToPostfix("10 + 3 * 5 / ( 16 - 4 )"));
 
-                    switch (str) {
-                        //忽略左括号
-                        case "(" 	:  break;
-                        case "+" 	:
-                        case "-" 	:
-                        case "*" 	:
-                        case "/" 	:
-                        case "sqrt" : ops.push(str);
-                            break;
-                        //如果是右括号的话, 就执行操作
-                        case ")" 	:
-                            String operator = ops.pop();
-                            Double val = vals.pop();
+        //Ex 1.3.11
+        title("Ex 1.3.11");
 
-                            //计算并将结果压回Stack
-                            switch (operator) {
-                                case "+" : vals.push(vals.pop() + val);
-                                    break;
-                                case "-" : vals.push(vals.pop() - val);
-                                    break;
-                                case "*" : vals.push(vals.pop() * val);
-                                    break;
-                                case "/" : vals.push(vals.pop() / val);
-                                    break;
-                                case "sqrt" : vals.push(Math.sqrt(val));
-                                    break;
-                            }
-                            break;
-                        //如果既不是运算符也不是括号, 就是操作数了
-                        default : vals.push(Double.parseDouble(str));
-                    }
-                   
+        o(infixToPostfix("10 + 3 * 5 / ( 16 - 4 )") + "的结果是"
+                + evaluatePostfix(infixToPostfix("10 + 3 * 5 / ( 16 - 4 )")));
 
-                }
+        //Ex 1.3.31 & Ex 1.3.32 & Ex 1.3.33 原理和思路和DoubleLinkedList.java类似
 
-                //输出结果
-                System.out.println("上述算术表达式的值为" + vals.pop());
-                System.out.println("输入一行算术表达式, 空行回车或者Ctrl+Z结束本程序.");
-            }
-        }
 
-        //
 
-	}
+    }
 }///~
+

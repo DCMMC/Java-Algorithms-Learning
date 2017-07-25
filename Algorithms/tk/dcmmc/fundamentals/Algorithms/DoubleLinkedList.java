@@ -1,7 +1,7 @@
 package tk.dcmmc.fundamentals.Algorithms;
 
-
 import java.util.Iterator;
+import java.lang.reflect.Array;
 
 /**
  * class comment : Generic Type Double Linked List(DLLists)
@@ -31,6 +31,32 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
      */
     public DoubleLinkedList() {
 
+    }
+
+    /**
+     * 从数组创建LinkedList
+     * 基本类型数组并不能向上转型为Item[](Object[]), 不过(基本类型)数组都可以向上转型为Object, 然后再利用
+     * java.lang.reflect.Array类获取index和get元素. 在强制向下转型为Item
+     * @param array
+     *           Item数组
+     */
+    @SuppressWarnings("unchecked")
+    public DoubleLinkedList(Object array) {
+        int length = Array.getLength(array);
+
+        for (int i = 0; i < length; i++)
+            addLast( (Item)Array.get(array, i));
+    }
+
+    /**
+     * 从可变参数中创建LinkedList
+     * @param arrayElements
+     *           可变长参数
+     */
+    @SuppressWarnings("unchecked")
+    public DoubleLinkedList(Item... arrayElements) {
+        for (Item i : arrayElements)
+            addLast(i);
     }
 
     /**************************************
@@ -92,7 +118,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
      * Methods                            *
      **************************************/
     /**
-     * 从DoubleLinkedList中的前端添加新的元素
+     * 从DoubleLinkedList中的前端添加新的元素(模拟LIFO)
      * @param item 新元素
      */
     public void addFirst(Item item) {
@@ -110,7 +136,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
     }
 
     /**
-     * 从DoubleLinkedList中的后端添加新的元素
+     * 从DoubleLinkedList中的后端添加新的元素(模拟FIFO)
      * @param item 新元素
      */
     public void addLast(Item item) {
@@ -120,9 +146,9 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
             size++;
         } else {
             Node tmpLast = new Node(item);
-            this.last.next = tmpLast;
+            last.next = tmpLast;
             tmpLast.previous = this.last;
-            this.last = tmpLast;
+            last = tmpLast;
             size++;
         }
     }
@@ -174,7 +200,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
      * @return 要获取的元素
      * @throws IndexOutOfBoundsException 如果offset不存在就抛出异常
      */
-    public Item peek(int offset) throws IndexOutOfBoundsException {
+    public Item pop(int offset) throws IndexOutOfBoundsException {
         outOfBoundsCheck(offset);
 
         int index = 0;
@@ -182,9 +208,13 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
         while (current.next != null) {
             if (index++ == offset) {
                 //如果获取到该offset所在的Node
-                //如果该Node是first
+                //如果是first
                 if (current.previous == null) {
-                    first = first.next;
+                    //如果List只有一个元素
+                    if (first.next == null)
+                        first = last = null;
+                    else
+                        first = first.next;
                 } else {
                     current.previous.next = current.next;
                 }
@@ -196,10 +226,16 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
             current = current.next;
         }
 
+
         //如果是last
         if (index == offset) {
-            last = last.previous;
-            last.next = null;
+            //如果只有一个元素
+            if (getSize() == 1) {
+                first = last = null;
+            } else {
+                last = last.previous;
+                last.next = null;
+            }
             size--;
             return current.item;
         }
@@ -209,23 +245,46 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
 
 
     /**
-     * 返回List前端的元素, 并把该元素从List中删除.
+     * 返回List前端的元素, 并把该元素从List中删除.(模拟LIFO)
      * @return List前端第一个元素
      */
-    public Item peekFirst() {
-        return peek(0);
+    public Item popFirst() {
+        return pop(0);
     }
 
     /**
-     * 返回List后端的元素, 并把该元素从List中删除.
+     * 返回List后端的元素, 并把该元素从List中删除.(模拟FIFO)
      * @return List后端最后一个元素
      */
-    public Item peekLast() {
-        return peek(getSize() - 1);
+    @SuppressWarnings("unchecked")
+    public Item popLast() {
+        Item lastItem = last.item;
+
+        //如果只有一个元素
+        if (getSize() == 1) {
+            first = last = null;
+        } else {
+            last = last.previous;
+            last.next = null;
+        }
+        size--;
+        return lastItem;
     }
 
     /**
-     * 返回List后端的元素
+     * 用List中删除指定offset的元素
+     * @offset   要删除的元素的序号
+     * @throws IndexOutOfBoundsException 如果offset不存在就抛出异常
+     */
+    public void remove(int offset) throws IndexOutOfBoundsException {
+        outOfBoundsCheck(offset);
+
+        pop(offset);
+    }
+
+
+    /**
+     * 返回List后端的元素, 并且不会删除这个元素
      * @return List前端第一个元素
      */
     public Item getFirst() {
@@ -237,7 +296,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
     }
 
     /**
-     * 返回List后端的元素
+     * 返回List后端的元素, 并且不会删除这个元素
      * @return List后端最后一个元素
      */
     public Item getLast() {
@@ -249,7 +308,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
     }
 
     /**
-     * 从任意的offset中获取item
+     * 从任意的offset中获取item, 并且不会删除这个元素
      * @param offset
      *           要获取的元素的offset, 0 <= offset <= getSize() - 1
      * @return 要获取的元素
@@ -416,6 +475,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
      * @param args
      *          command-line arguments.
      */
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
 
         DoubleLinkedList<Integer> dllist = new DoubleLinkedList<>();
@@ -433,16 +493,29 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
         o("getFirst(): " + dllist.getFirst() + ", getLast(): " + dllist.getLast()
                 + ", get(2): " + dllist.get(2));
 
-        //Peek Test
-        dllist.peekFirst();
-        dllist.peekLast();
-        dllist.peek(2);
+        //Pop Test
+        dllist.popFirst();
+        dllist.popLast();
+        dllist.pop(2);
 
         //Test Modify
         dllist.modify(1, 7);
 
         //Test toString and Iterator, 结果应该是8, 7, 7, 6
         o(dllist);
+
+        //array to Linked List
+        //Primitive type array
+        int[] array = {1, 3, 5, 7};
+        o(new DoubleLinkedList(array));
+
+        //Reference type array
+        Integer[] integerArray = {1, 3, 5, 7};
+        //为了抑制java对于数组造成的潜在的varargs参数混淆的警告, 先强制转化为Object而不是Object[]
+        o(new DoubleLinkedList((Object)integerArray));
+
+        //varargs test
+        o(new DoubleLinkedList(1, 5, 9, 11));
 
     }
 }///:~

@@ -1,6 +1,5 @@
 package tk.dcmmc.fundamentals.Algorithms;
 
-
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -160,6 +159,7 @@ public class Stack<Item> implements Iterable<Item> {
     * @param size 新的array的大小
     * @return 原来stack的MAXSIZE
     */
+    @SuppressWarnings("unchecked")
     private int resize(int newCapacity) {
     	//注意: 这里不会检查size是否大于newCapacity
     	synchronized (elements) {
