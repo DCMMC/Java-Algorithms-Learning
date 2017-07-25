@@ -29,9 +29,14 @@
 
 ### 1.3 Bags, Queues and Stacks
 
-[**Exercise**](./tk/dcmmc/fundamentals/Exercises/)
+[**Exercise**](./tk/dcmmc/fundamentals/Exercises/BagsQueuesStacks.java)
 
 #### Algorithms
+
+* [Bag](./tk/dcmmc/fundamentals/Algorithms/Bag.java)
+* [Stack](./tk/dcmmc/fundamentals/Algorithms/Stack.java)
+* [Queue](./tk/dcmmc/fundamentals/Algorithms/Queue.java)
+* [DoubleLinkedList](./tk/dcmmc/fundamentals/Algorithms/DoubleLinkedList.java)
 
 ---
 
