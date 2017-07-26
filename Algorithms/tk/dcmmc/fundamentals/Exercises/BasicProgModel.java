@@ -257,7 +257,7 @@ public class BasicProgModel {
     private static void shuffle(int[] a) {
         final int N = a.length;
 
-        //将a[i]和a[i] ... a[N-1]
+        //将a[i]和a[i] ... a[N-1], P.S.不能是将a[i]和随机的a[0]...a[N-1]互换, 不然N!种排列出现的可能就不一样了
         for (int i = 0; i < N; i++) {
             int r = i + StdRandom.uniform(N-i);
 
