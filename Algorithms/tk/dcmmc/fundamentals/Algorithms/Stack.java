@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 /**
  * class comment : Generic Type Stack(LIFO)
- * 使用(可变长度)数组实现.
+ * 使用(可变长度resizing-capacity)数组实现.
  * 但是更换数组长度的时候会产生时间消耗(不过至少比fixed-capacity array好一点)
  * 一个更好的实现就是LinkedList(SLL/DLL).
  * @author DCMMC
@@ -168,7 +168,7 @@ public class Stack<Item> implements Iterable<Item> {
     		for (Item i : elements)
     			newElements[cnt++] = i;
 
-    		//把elements交接到心得array对象
+    		//把elements交接到新的array对象
     		elements = newElements;
 
     		//更新MAXSIZE大小
