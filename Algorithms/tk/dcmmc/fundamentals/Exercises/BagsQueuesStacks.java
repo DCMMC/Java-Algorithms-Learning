@@ -1,6 +1,7 @@
 package tk.dcmmc.fundamentals.Exercises;
 
 import tk.dcmmc.fundamentals.Algorithms.Stack;
+import tk.dcmmc.fundamentals.Algorithms.Queue;
 import tk.dcmmc.fundamentals.Algorithms.DoubleLinkedList;
 import java.util.Scanner;
 import java.util.LinkedHashMap;
@@ -14,11 +15,11 @@ import java.util.LinkedHashMap;
  */
 public class BagsQueuesStacks {
     /**
-    * 用于Ex 1.3.30的嵌套类
-    */
+     * 用于Ex 1.3.30 和 Ex 1.3.37的嵌套类
+     */
     private static class Node<Item> {
         Item item;
-        Node next;
+        Node<Item> next;
         Node (Item item) {
             this.item = item;
         }
@@ -217,13 +218,14 @@ public class BagsQueuesStacks {
     }
 
     /**
-    * Ex 1.3.30
-    * 将链表反转并返回链表的首个结点
-    * 使用(中)递归的方法处理, 要好好的慢慢的理解这个递归的原理.
-    * @param first
-    *           要反转的链表的首结点.
-    * @return 反转之后的链表的首结点
-    */
+     * Ex 1.3.30
+     * 将链表反转并返回链表的首个结点
+     * 使用(中)递归的方法处理, 要好好的慢慢的理解这个递归的原理.
+     * @param first
+     *           要反转的链表的首结点.
+     * @return 反转之后的链表的首结点
+     */
+    @SuppressWarnings("unchecked")
     private Node reverse(Node first) {
         //如果链表是空的, 否则, 递归开始, 假设该链表共有N个Node
         if (first == null)
@@ -248,6 +250,108 @@ public class BagsQueuesStacks {
 
         //reset一直都是Node(N), 也就是最后反序之后的第一个结点.
         return reset;
+    }
+
+    /**
+     * Ex 1.3.37
+     * Josephus问题
+     * 使用环形链表处理该问题
+     * @param persons
+     *           总人数
+     * @param kill
+     *           要被杀死的那个人的报数, 为正整数
+     */
+    @SuppressWarnings("unchecked")
+    private static void josephus(int persons, int kill) {
+        //首结点
+        Node<Integer> first = new Node<>(0);
+
+        Node<Integer> current = first;
+
+        int cnt = 0;
+
+        //第2到第persons个Node
+        while (++cnt < persons) {
+            current.next = new Node<>(cnt);
+            current = current.next;
+        }
+
+        //最后一个Node接到first
+        current.next = first;
+
+        //人们被杀死的顺序(编号)
+        String order = "";
+
+        Node<Integer> previous = current;
+
+        //移动到首个节点
+        current = current.next;
+
+        int number = 0;
+
+        while (first != null) {
+            if (++number == kill) {
+                //如果只剩下一个结点了
+                if (previous == current) {
+                    //记录下来
+                    order += current.item + " ";
+                    first = previous = current = null;
+                } else {
+                    //把当前结点从链表中删除
+                    previous.next = current.next;
+                    //记录下来
+                    order += current.item + " ";
+                    //如果当前结点就是first, 那就把first变成下一个结点(因为原来first指向的结点要被用链表中删除)
+                    if (current == first)
+                        first = first.next;
+                    current = current.next;
+                }
+                //报数清零
+                number = 0;
+            } else {
+                //顺序往下移动
+                previous = previous.next;
+                current = current.next;
+            }
+
+        }
+
+        o(order);
+    }
+
+    /**
+     * Ex 1.3.37
+     * Josephus问题
+     * 使用Queue处理该问题, 比使用环形链表的方案更加简单
+     * @param n
+     *           总人数
+     * @param m
+     *           要被杀死的那个人的报数, 为正整数
+     */
+    private static void josephusQueue(int n, int m) {
+        Queue<Integer> queue = new Queue<>();
+
+        String order = "";
+
+        //创建队列
+        for (int i = 0; i < n; i++) {
+            queue.enqueue(i);
+        }
+
+        int cnt = 0;
+
+        while (!queue.isEmpty()) {
+            //取出
+            int x = queue.dequeue();
+
+            //如果报数到了m, 就放进order, 如果没有就重新放回去(而且因为是队列, 所以就放回到了队列最后面)
+            if (++cnt % m == 0)
+                order += x + " ";
+            else
+                queue.enqueue(x);
+        }
+
+        o(order);
     }
 
     /**************************************
@@ -353,7 +457,22 @@ public class BagsQueuesStacks {
 
         //Ex 1.3.31 & Ex 1.3.32 & Ex 1.3.33 原理和思路和DoubleLinkedList.java类似
 
+        //Ex 1.3.37
+        //Josephus问题
+        title("Ex 1.3.37");
 
+        josephus(7, 2);
+
+        josephusQueue(7, 2);
+
+        //Ex 1.3.49 
+        //听说很难
+        title("Ex 1.3.49");
+
+        
+
+        //Ex 1.3.50 
+        //这道题的内容我已经写在了DoubleLinkedList里面了
 
     }
 }///~

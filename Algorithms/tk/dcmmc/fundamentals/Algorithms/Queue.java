@@ -1,6 +1,5 @@
 package tk.dcmmc.fundamentals.Algorithms;
 
-
 import java.util.Iterator;
 
 /**
@@ -33,15 +32,15 @@ public class Queue<Item> implements Iterable<Item> {
      * 默认构造器
      */
     public Queue() {
-        
+
     }
 
     /**************************************
      * Inner Class                        *
      **************************************/
     /**
-    * Linked List节点
-    */
+     * Linked List节点
+     */
     private class Node {
         //节点中保存的元素, 初始化为null
         Item item;
@@ -89,16 +88,17 @@ public class Queue<Item> implements Iterable<Item> {
     }
 
     /**************************************
-     * Methods     		                  *
+     * Methods                            *
      **************************************/
     /**
-    * 向Queue中添加新的元素
-    * @param item 新元素
-    */
+     * 向Queue中添加新的元素
+     * @param item 新元素
+     */
     public void enqueue(Item item) {
         //如果LinkedList里面还没有任何元素
-    	if (last == null) {
+        if (last == null) {
             last = first = new Node(item);
+            size++;
         } else {
             Node tmpLast = new Node(item);
             this.last.next = tmpLast;
@@ -108,12 +108,12 @@ public class Queue<Item> implements Iterable<Item> {
     }
 
     /**
-    * 返回第一个添加到Queue的元素, 并从Queue从删除这个元素
-    * @return 第一个添加到Queue的元素
-    */
+     * 返回第一个添加到Queue的元素, 并从Queue从删除这个元素
+     * @return 第一个添加到Queue的元素
+     */
     public Item dequeue() {
         //如果Queue为空就返回null
-    	if (first == null)
+        if (first == null)
             return null;
 
         //更新first
@@ -124,35 +124,37 @@ public class Queue<Item> implements Iterable<Item> {
         if (first == null)
             last = null;
 
+        size--;
+
         return item;
     }
 
     /**
-    * 获得当前Queue存储了多少个元素
-    * @return 当前Queue存储的多少个元素
-    */
+     * 获得当前Queue存储了多少个元素
+     * @return 当前Queue存储的多少个元素
+     */
     public int getSize() {
         return size;
     }
 
     /**
-    * 判断Queue是否是空的
-    * @return 判断Queue是否是空的
-    */
+     * 判断Queue是否是空的
+     * @return 判断Queue是否是空的
+     */
     public boolean isEmpty() {
         return size == 0;
     }
 
     /**
-    * 判断Queue是否已满, resizing-capacity array的实现方案直接都返回true
-    * @return 判断Queue是否已满
-    */
+     * 判断Queue是否已满, resizing-capacity array的实现方案直接都返回true
+     * @return 判断Queue是否已满
+     */
     public boolean isFull() {
-    	//这是原来fixed-capacity array实现的Queue的方案
+        //这是原来fixed-capacity array实现的Queue的方案
         //return getSize() >= MAXSIZE;
 
         //新的resizing-capacity array实现的Queue, 直接返回false.
-    	return false;
+        return false;
     }
 
 
@@ -169,7 +171,7 @@ public class Queue<Item> implements Iterable<Item> {
     /**
      * Test Client.
      * @param args
-     *			command-line arguments.
+     *          command-line arguments.
      */
     public static void main(String[] args) {
         //foreach遍历测试
@@ -186,6 +188,14 @@ public class Queue<Item> implements Iterable<Item> {
             System.out.println(i);
         }
 
+        String result = "";
+
+        while (!queue.isEmpty())
+            result += queue.dequeue();
+
+        System.out.println(result);
+
     }
 }///:~
+
 

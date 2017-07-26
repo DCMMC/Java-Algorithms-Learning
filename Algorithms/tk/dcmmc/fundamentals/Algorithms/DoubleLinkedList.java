@@ -2,6 +2,7 @@ package tk.dcmmc.fundamentals.Algorithms;
 
 import java.util.Iterator;
 import java.lang.reflect.Array;
+import java.util.ConcurrentModificationException;
 
 /**
  * class comment : Generic Type Double Linked List(DLLists)
@@ -20,6 +21,9 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
 
     //尾节点也就是最晚加入的节点, 初始化为null
     private Node last;
+
+    //为ReverseArrayIterator迭代器记录对List的操作次数, 防止在迭代的过程中List被更改
+    private int opsCnt;
 
 
 
@@ -86,23 +90,36 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
      * 用于遍历这个DoubleLinkedList
      */
     private class ReverseArrayIterator implements Iterator<Item> {
+        //为当前opsCnt创建副本
+        private final int opsCntCopy = opsCnt;
+
         private Node current = first;
 
         /**
          * 返回当前遍历是否还有下一个元素
          * @return List中上个被遍历的元素后面还有元素就返回true
+         * @throws ConcurrentModificationException
+         *         如果在迭代期间, List被修改, 就抛出异常
          */
         @Override
-        public boolean hasNext() {
+        public boolean hasNext() throws ConcurrentModificationException {
+            if (opsCntCopy != opsCnt)
+                throw new ConcurrentModificationException();
+
             return current != null;
         }
 
         /**
          * 继续遍历List后面的所有元素
          * @return 下一个元素的值
+         * @throws ConcurrentModificationException
+         *         如果在迭代期间, List被修改, 就抛出异常
          */
         @Override
         public Item next() {
+            if (opsCntCopy != opsCnt)
+                throw new ConcurrentModificationException();
+
             if (hasNext()) {
                 Item item = current.item;
                 current = current.next;
@@ -126,12 +143,14 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
         if (first == null) {
             last = first = new Node(item);
             size++;
+            opsCnt++;
         } else {
             Node tmpFirst = new Node(item);
             tmpFirst.next = this.first;
             this.first.previous = tmpFirst;
             first = tmpFirst;
             size++;
+            opsCnt++;
         }
     }
 
@@ -144,12 +163,14 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
         if (last == null) {
             last = first = new Node(item);
             size++;
+            opsCnt++;
         } else {
             Node tmpLast = new Node(item);
             last.next = tmpLast;
             tmpLast.previous = this.last;
             last = tmpLast;
             size++;
+            opsCnt++;
         }
     }
 
@@ -174,6 +195,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
                 newNode.next = current.next;
                 current.next = newNode;
                 size++;
+                opsCnt++;
             }
 
             //继续向后遍历
@@ -189,6 +211,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
             current.next = newNode;
             last = newNode;
             size++;
+            opsCnt++;
         }
 
     }
@@ -219,6 +242,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
                     current.previous.next = current.next;
                 }
                 size--;
+                opsCnt++;
                 return current.item;
             }
 
@@ -237,6 +261,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
                 last.next = null;
             }
             size--;
+            opsCnt++;
             return current.item;
         }
 
@@ -268,6 +293,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
             last.next = null;
         }
         size--;
+        opsCnt++;
         return lastItem;
     }
 
