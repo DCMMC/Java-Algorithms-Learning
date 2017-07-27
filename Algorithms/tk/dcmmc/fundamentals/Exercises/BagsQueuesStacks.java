@@ -11,7 +11,7 @@ import edu.princeton.cs.algs4.StdRandom;
 /**
  * 本文件包括Exercise 1.3中部分习题的解答
  * Created by DCMMC on 2017/7/24
- * Finished on 2017/7/
+ * Finished on 2017/7/26
  * @author DCMMC
  * @since 1.5
  */
