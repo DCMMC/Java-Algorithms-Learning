@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 
@@ -17,10 +19,11 @@ import java.nio.file.attribute.BasicFileAttributes;
  * 加载出来的就能有包名信息了.
  * 会判断要加载的class是否位于系统CLASSPATH目录树下, 如果位于的话就用URLClassLoader加载出有包名信息的类.
  *
- * Bugs: 只要是直接java LoadAnyClasses就会出现IllegalAccessError: tried to access... 的问题,
+ * 已修复Bug: 只要是直接java LoadAnyClasses就会出现IllegalAccessError: tried to access... 的问题,
  * 解决方式就是必须要在java命令后面指定一个classpath为".", i.e., java -classpath "." LoadAnyClasses
  * 解决: 原来是不同ClassLoader加载的类之间都是相当于不在相同包下的两个不同的类, 这样就会出现权限问题...
  * 具体参考: https://github.com/raphw/byte-buddy/issues/1
+ * 已修复Bug: 解决加载出来的Class在getSource()时返回null的问题(覆盖实现了findSource())
  *
  * 尝试从任意给定的class文件加载Class
  * 这样就可以用java command-line运行class的时候, 还要cd到类的一级包名的上层目录
@@ -427,6 +430,69 @@ public class LoadAnyClasses {
         }
 
         /**
+         * 由DCMMC覆盖实现Finds the resource with the given name.
+         * 这样用LoadAnyClass加载的class文件才能找到Resource目录.
+         *
+         * @param  name
+         *         The resource name
+         *
+         * @return  A <tt>URL</tt> object for reading the resource, or
+         *          <tt>null</tt> if the resource could not be found
+         *
+         * @since  1.2
+         */
+        @Override
+        protected URL findResource(String name) {
+            //先找上一个被加载的class所在的CLASSPATH
+            String classpath = locatedClasspath(lastClassPath);
+
+
+            //从最近的那一个被加载的class所在的classpath找找
+            if (classpath != null) {
+                File fileInCurrentClasspath = new File(
+                        classpath.charAt(classpath.length() - 1) == File.separatorChar
+                                ? (classpath + name) : (classpath + File.separator + name));
+
+                try {
+                    if (fileInCurrentClasspath.exists())
+                        return fileInCurrentClasspath.toURI().toURL();
+                } catch (MalformedURLException me) {
+                    //MalformedURLException...
+                    //无视它?.
+                }
+
+            }
+
+            //在从别的CLASSPATH中试试
+            //获取当前系统下的所有CLASSPATH
+            String classpathAll = System.getenv().get("CLASSPATH");
+            //解析CLASSPATH
+            classpathAll = classpathAll.replaceFirst("(?m)^.", "")
+                    .replaceAll(";\\.;", ";")
+                    .replaceFirst("(?m);.$", ";");
+
+            String[] classpathAllInArr = classpathAll.split(";");
+
+            for (String s : classpathAllInArr) {
+                if (!s.equals(classpath)) {
+                    File tmpNameFile;
+
+                    try {
+                        if ((tmpNameFile = new File( s.charAt(s.length() - 1) == File.separatorChar
+                                ? (s + name) : (s + File.separator + name))).exists())
+                            return tmpNameFile.toURI().toURL();
+                    } catch (MalformedURLException me) {
+                        //MalformedURLException...
+                        //无视它?.
+                    }
+
+                }
+            }
+
+            return null;
+        }
+
+        /**
          * 判断目录是否属于系统CLASSPATH下, 如果是就返回所在的那个CLASSPATH
          * @param filePath
          *          一个存在的路径
@@ -620,7 +686,6 @@ public class LoadAnyClasses {
             LoadAnyClasses.class.getDeclaredMethod("varargsFoo", String[].class)
                     .invoke(constructor.newInstance(),
                             new Object[]{new String[]{"Hello", "World"}});
-
 
         } catch (Exception e) {
             throw new RuntimeException(e);
