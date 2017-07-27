@@ -5,6 +5,8 @@ import tk.dcmmc.fundamentals.Algorithms.Queue;
 import tk.dcmmc.fundamentals.Algorithms.DoubleLinkedList;
 import java.util.Scanner;
 import java.util.LinkedHashMap;
+import java.util.EmptyStackException;
+import edu.princeton.cs.algs4.StdRandom;
 
 /**
  * 本文件包括Exercise 1.3中部分习题的解答
@@ -354,6 +356,145 @@ public class BagsQueuesStacks {
         o(order);
     }
 
+    /**
+    * Ex 1.3.49
+    * 因为有设置每个暂存Stack的最大容量, 所以每一次对于QueueWithThreeStacks的操作在worst case下还是有固定的Stack
+    * 操作(默认就是100)
+    * Queue with Three Stacks
+    */
+    private static class QueueWithThreeStacks<Item> {
+        //默认每个暂存Stack的最大容量
+        private int maxCapacity = 100;
+
+        //用来dequeue的Stack
+        private Stack<Item> s = new Stack<>();
+
+        //记录s大小
+        private int sizeS;
+
+        //1号dequeue栈
+        private Stack<Item> firstQ = new Stack<>();
+
+        //记录1号栈大小
+        private int sizeFirstQ;
+
+        //2号dequeue栈
+        private Stack<Item> secondQ = new Stack<>();
+
+        //记录2号栈大小
+        private int sizeSecondQ;
+
+        //默认构造器
+        QueueWithThreeStacks() {
+
+        }
+
+        /**
+        * 重载的构造器, 可以设置每个暂存Stack的最大容量
+        * @param maxCapacity
+        *           每个暂存Stack的最大容量, 必须是大于0的整数
+        * @throws IllegalArgumentException, maxCapacity小于等于0就抛出异常
+        */
+        QueueWithThreeStacks(int maxCapacity) throws IllegalArgumentException {
+            if (maxCapacity <= 0) 
+                throw new IllegalArgumentException("参数maxCapacity不能小于等于0!");
+
+            this.maxCapacity = maxCapacity;
+        }
+
+        /**
+        * 向该Queue添加元素
+        * @param item
+        *           要添加的元素
+        */
+        void enqueue(Item item) {
+            s.push(item);
+            sizeS++;
+
+            //如果s有超过maxCapacity个元素, 就移动这么多个元素去Q
+            if (sizeS >= maxCapacity) {
+                if (sizeFirstQ == 0) {
+                    //如果firstQ为空, 就给firstQ加maxCapacity个元素
+                    for (int i = 0; i < maxCapacity; i++) {
+                        sizeS--;
+                        firstQ.push(s.pop());
+                        sizeFirstQ++;
+                    }
+                } else if (sizeSecondQ == 0) {
+                    //如果firstQ非空且secondQ为空, 就给secondQ加maxCapacity个元素
+                    for (int i = 0; i < maxCapacity; i++) {
+                        sizeS--;
+                        secondQ.push(s.pop());
+                        sizeSecondQ++;
+                    }
+                }
+            }
+        }
+
+        /**
+        * 从该Queue中取出元素, 并把该元素删除
+        * @return 最早进Queue的元素
+        */
+        Item dequeue() throws EmptyStackException {
+            if (sizeFirstQ == 0) {
+                if (sizeSecondQ > 0) {
+                    //如果firstQ空而secondQ非空, 就将这两个Stack互换
+                    Stack<Item> tmpQ = firstQ;
+                    firstQ = secondQ;
+                    secondQ = tmpQ;
+                    sizeFirstQ = sizeSecondQ;
+                    sizeSecondQ = 0;
+                } else if (sizeS > 0 && sizeS < maxCapacity) {
+                    //如果s中元素不足maxCapacity, 就把所以的元素移进firstQ
+                    while (!s.isEmpty()) {
+                        sizeS--;
+                        firstQ.push(s.pop());
+                        sizeFirstQ++;
+                    }
+                } else if(sizeS >= maxCapacity) {
+                    //如果s中元素大于maxCapacity, 就把maxCapacity个元素移进firstQ
+                    for (int i = 0; i < maxCapacity; i++) {
+                        sizeS--;
+                        firstQ.push(s.pop());
+                        sizeFirstQ++;
+                    }
+                } else {
+                    throw new EmptyStackException();
+                }
+                
+            } 
+            
+            //如果firstQ有元素那就从firstQ中取元素出来
+            sizeFirstQ--;
+            return firstQ.pop();
+        }
+
+        /**
+        * 返回当前Queue的元素个数
+        * @return 当前Queue的元素个数
+        */
+        int getSize() {
+            return sizeS + sizeSecondQ + sizeFirstQ;
+        }
+
+        /**
+        * 返回当前Queue是否为空
+        * @return 当前Queue为空就返回true
+        */
+        boolean isEmpty() {
+            return sizeS + sizeSecondQ + sizeFirstQ == 0;
+        }
+
+        /**
+        * 返回当前Queue是否已满
+        * @return 当前Queue满了就返回true
+        */
+        boolean isFull() {
+            return false;
+        }
+
+    }
+
     /**************************************
      * 我的一些方法和client测试方法         *
      **************************************/
@@ -469,11 +610,29 @@ public class BagsQueuesStacks {
         //听说很难
         title("Ex 1.3.49");
 
-        
+        QueueWithThreeStacks<Integer> queue = new QueueWithThreeStacks<>(4);
+        queue.enqueue(5);
+        queue.enqueue(2);
+        queue.enqueue(1);
+        queue.enqueue(7);
+        queue.enqueue(5);
+        queue.enqueue(2);
+        queue.enqueue(1);
+        queue.enqueue(7);
+        queue.enqueue(5);
+        queue.enqueue(2);
+        queue.enqueue(1);
+        queue.enqueue(7);
+
+        String result = "";
+
+        while (!queue.isEmpty())
+            result += queue.dequeue() + " ";
+
+        o(result);
 
         //Ex 1.3.50 
         //这道题的内容我已经写在了DoubleLinkedList里面了
 
     }
 }///~
-
