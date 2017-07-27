@@ -1,6 +1,6 @@
 # *Algorithm (4th Edition)* (Algorithm and Data Struct)
 
-> This project include the whole implementations of this Book's Algorithms and my solutions to the Exercises in this Book .
+> This project include the whole implementations of this Book's Algorithms and my solutions to part of Exercises in this Book .
 
 > 本项目包含了书上的所有经典算法的实现和我对书上课后习题的解答
 
@@ -15,6 +15,8 @@
 
 [**Exercise**](./tk/dcmmc/fundamentals/Exercises/BasicProgModel.java)
 
+(Exercise 1.1.1c, 1.1.16, 1.1.18, 1.1.19, 1.1.20, 1.1.22, 1.1.25, 1.1.29, 1.1.34, 1.1.36)
+
 #### Algorithms
 
 * [Euclid's algorithm](./tk/dcmmc/fundamentals/Algorithms/EuclidGCD.java): Computer the GCD(Greatest Common Divisor) of two nonzero integers.
@@ -22,6 +24,8 @@
 ### 1.2 Data Abstraction
 
 [**Exercise**](./tk/dcmmc/fundamentals/Exercises/DataAbstraction.java)
+
+(Exercise 1.2.6, 1.2.7, 1.2.10, 1.2.16, 1.2.17)
 
 #### Algorithms
 
@@ -31,12 +35,22 @@
 
 [**Exercise**](./tk/dcmmc/fundamentals/Exercises/BagsQueuesStacks.java)
 
+(Exercise 1.3.3, 1.3.4, 1.3.9, 1.3.10, 1.3.11, 1.3.31, 1.3.32, 1.3.33, 1.3.37, 1.3.49, 1.3.50)
+
 #### Algorithms
 
 * [Bag](./tk/dcmmc/fundamentals/Algorithms/Bag.java)
 * [Stack](./tk/dcmmc/fundamentals/Algorithms/Stack.java)
 * [Queue](./tk/dcmmc/fundamentals/Algorithms/Queue.java)
 * [DoubleLinkedList](./tk/dcmmc/fundamentals/Algorithms/DoubleLinkedList.java)
+
+### 1.4 Analysis of Algorithms
+
+[**Exercise**](./tk/dcmmc/fundamentals/Exercises/AnalysisOfAlgorithms.java)
+
+#### Algorithms
+
+* null
 
 ---
 
