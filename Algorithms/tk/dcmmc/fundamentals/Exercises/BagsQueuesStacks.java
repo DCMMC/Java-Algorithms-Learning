@@ -571,6 +571,7 @@ public class BagsQueuesStacks {
         //解法: 把所有的左括号放在Stack left中, 当遇到右括号的时候, 从left弹出来, 对比是否正确
 
         //Ex 1.3.9
+        //这题有点难度
         title("Ex 1.3.9");
 
         //Demo Input 必须确保输入格式正确
