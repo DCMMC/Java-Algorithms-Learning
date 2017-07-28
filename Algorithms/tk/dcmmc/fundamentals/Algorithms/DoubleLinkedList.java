@@ -440,6 +440,9 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
      */
     @Override
     public String toString() {
+        if (getSize() == 0)
+            return "没有任何元素.";
+        
         Iterator<Item> itr = iterator();
 
         String info = "[ ";

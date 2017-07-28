@@ -92,6 +92,7 @@ public class Stack<Item> implements Iterable<Item> {
     */
     public void push(Item item) {
     	//如果Stack小于MAXSIZE * 0.8, 就正常添加, 否则就resize到MAXSIZE * 2.
+        //原书是到了MAXSIZE才加倍到MAXSIZE * 2
         if(getSize() >= MAXSIZE * 4 / 5)
         	resize(MAXSIZE * 2);
 

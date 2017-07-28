@@ -3,11 +3,10 @@
  * Created by DCMMC on 2017/7/17
  * Finished on 2017/7/20
  */
-
 package tk.dcmmc.fundamentals.Exercises;
 
 import java.util.*;
-
+import tk.dcmmc.fundamentals.Algorithms.*;
 //导入随书配套使用的库
 import edu.princeton.cs.algs4.*;
 
@@ -45,8 +44,12 @@ public class BasicProgModel {
             //先调用外部类中的rank()方法来获得a中(多个)key的任意一个offset.
             int anyOffsetInA = BasicProgModel.rank(key, a);
 
+            //如果a中没有任何key, 就返回-1
+            if (anyOffsetInA == -1)
+                return -1;
+
             //开始向前查找是否还有key
-            while (a[--anyOffsetInA] == key)
+            while (--anyOffsetInA >= 0 && a[anyOffsetInA] == key)
                 ;//空语句
 
             return ++anyOffsetInA;
@@ -65,7 +68,7 @@ public class BasicProgModel {
             //数组a中第一个key的index
             int firstIndex = rank(key, a);
 
-            while (a[firstIndex++] == key)
+            while (firstIndex > -1 && firstIndex < a.length && a[firstIndex++] == key)
                 cnt++;
 
             return cnt;
@@ -222,6 +225,32 @@ public class BasicProgModel {
             return rank(key, a, mid + 1, hi, depthCnt);
         } else {
             o("Depth: " + depthCnt.depth + " offset of key in array a: " + mid);
+            return mid;
+        }
+
+    }
+
+     /**
+     * Exercise 1.4.41
+     * 在数组中由参数指定的范围查找key的index.
+     * @param key 要找的那个数值
+     * @param a 已经由小到大排序好的int数组
+     * @param lo 查找范围的下限index
+     * @param hi 查找范围的上线offset
+     * @return 找不到就返回-1, 找得到就返回key在a中的index
+     */
+    public static int rank(int key, int[] a, int lo, int hi) {
+        if (lo > hi) {
+            return -1;
+        }
+
+        int mid = lo + (hi - lo) / 2;
+
+        if (key < a[mid]) {
+            return rank(key, a, lo, mid - 1);
+        } else if (key > a[mid]) {
+            return rank(key, a, mid + 1, hi);
+        } else {
             return mid;
         }
 
@@ -410,7 +439,7 @@ public class BasicProgModel {
 
         //Ex 1.1.22
         title("Ex 1.1.22");
-        int[] a = {1, 2, 3, 3, 6, 6, 7, 8, 9, 15, 33, 56, 56, 78};
+        int[] a = {1, 1, 2, 3, 3, 6, 6, 7, 8, 9, 15, 33, 56, 56, 78};
         int key = 56;
         o(key + "的offset是" + rank(key, a) + ", 经过" + DepthCount.depth + "次递归");
 
@@ -436,14 +465,10 @@ public class BasicProgModel {
 
         //Ex 1.1.29
         title("Ex 1.1.29");
+        
+        key = 1;
 
-        Collection<Integer> aList = new ArrayList<>(14);
-
-        for (Integer i : a)
-            aList.add(i);
-
-        //就直接用Ex 1.1.22的那个数组来测试算了
-        o("数组: " + aList +"中\nkey = "+ key + " 前面有" + BinarySearch.rank(key, a) + "个元素, " +
+        o("数组: " + new DoubleLinkedList(a) +"中\nkey = "+ key + " 前面有" + BinarySearch.rank(key, a) + "个元素, " +
                 "并且key = " + key + "有" + BinarySearch.count(key, a) + "个.");
 
         //Ex 1.1.31
