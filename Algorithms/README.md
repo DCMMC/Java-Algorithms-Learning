@@ -48,6 +48,8 @@
 
 [**Exercise**](./tk/dcmmc/fundamentals/Exercises/AnalysisOfAlgorithms.java)
 
+(Exercise 1.4.1 1.4.3 1.4.5 1.4.6 1.4.9 1.4.11 1.4.15 1.4.16 1.4.17 1.4.19 1.4.20 1.4.22 1.4.23 1.4.24 1.4.25 1.4.32 1.4.41)
+
 #### Algorithms
 
 * null
