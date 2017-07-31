@@ -1225,7 +1225,7 @@ class AnalysisOfAlgorithms {
 
         title("");
         o(eggsDrop3(10, 10));
-        o(eggsDrop3(10, 2));
+        o(eggsDrop3(10, 2)); 
         o(eggsDrop3(100000, 56461));
 
         //拓展: 要求的n层楼t个鸡蛋的最少尝试次数, 需要考虑到二叉树和DP(Dynamic Programming), 一个经典的Google面试题
