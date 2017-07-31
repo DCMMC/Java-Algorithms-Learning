@@ -1,4 +1,4 @@
-package tk.dcmmc.workspace;
+//package tk.dcmmc.workspace;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,11 +19,10 @@ import java.nio.file.attribute.BasicFileAttributes;
  * 加载出来的就能有包名信息了.
  * 会判断要加载的class是否位于系统CLASSPATH目录树下, 如果位于的话就用URLClassLoader加载出有包名信息的类.
  *
- * 已修复Bug: 只要是直接java LoadAnyClasses就会出现IllegalAccessError: tried to access... 的问题,
+ * 已修复Bugs: 只要是直接java LoadAnyClasses就会出现IllegalAccessError: tried to access... 的问题,
  * 解决方式就是必须要在java命令后面指定一个classpath为".", i.e., java -classpath "." LoadAnyClasses
  * 解决: 原来是不同ClassLoader加载的类之间都是相当于不在相同包下的两个不同的类, 这样就会出现权限问题...
  * 具体参考: https://github.com/raphw/byte-buddy/issues/1
- * 已修复Bug: 解决加载出来的Class在getSource()时返回null的问题(覆盖实现了findSource())
  *
  * 尝试从任意给定的class文件加载Class
  * 这样就可以用java command-line运行class的时候, 还要cd到类的一级包名的上层目录
@@ -169,7 +168,7 @@ public class LoadAnyClasses {
         @Override
         protected Class<?> findClass(String className) throws ClassNotFoundException {
 
-            Class<?> result;
+            Class<?> result = null;
 
 
             //尝试从system class loader中获取class
@@ -263,11 +262,12 @@ public class LoadAnyClasses {
             if ((classpath = locatedClasspath(lastClassPath)) == null)
                 throw new ClassNotFoundException(className);
 
+            File tmpClassFile;
 
             //获得CLASSPATH后, 先尝试直接从当前找到的CLASSPATH + classPathByName加载
             try {
                 //先判断是不是有这个文件存在.
-                File tmpClassFile = new File(classpath + File.separatorChar + classPathByName + ".class");
+                tmpClassFile = new File(classpath + File.separatorChar + classPathByName + ".class");
 
                 //检查权限和是否存在
                 if (tmpClassFile.exists() && tmpClassFile.canRead() && tmpClassFile.canExecute()) {
@@ -303,47 +303,48 @@ public class LoadAnyClasses {
 
                     result = load(tmpClassFile.getAbsolutePath(), null,
                             className.replace(classShortName, "").replaceAll("\\.", ""));
+                }
 
-                    //看看是否成功得到了result.
-                    if (result != null)
-                        return result;
+                //看看是否成功得到了result.
+                if (result != null)
+                    return result;
 
-                    //在从别的CLASSPATH中试试
-                    //获取当前系统下的所有CLASSPATH
-                    String classpathAll = System.getenv().get("CLASSPATH");
-                    //解析CLASSPATH
-                    classpathAll = classpathAll.replaceFirst("(?m)^.", "")
-                            .replaceAll(";\\.;", ";")
-                            .replaceFirst("(?m);.$", ";");
-
-                    String[] classpathAllInArr = classpathAll.split(";");
-
-                    for (String s : classpathAllInArr) {
-                        if (!s.equals(classpath)) {
-                            tmpClassFile = new File(s + File.separatorChar + classPathByName + ".class");
-
-                            //检查权限和是否存在
-                            if (tmpClassFile.exists() && tmpClassFile.canRead() && tmpClassFile.canExecute()) {
-                                //Add CLASSPATH
-                                //method.invoke(urlClassLoader, new File(s).toURI().toURL());
-                                //尝试用URLClassLoader加载, 再尝试用load加载
-                                //if ((result = urlClassLoader.loadClass(className)) != null)
-                                //    return result;
-                                //else
-                                if ((result = load(tmpClassFile.getAbsolutePath(), null,
-                                        className.replace(classShortName, "").replaceAll("\\.", ""))) != null)
-                                    return result;
-                            }
-                        }
-                    }
-
-                } else
-                    throw new FileNotFoundException(tmpClassFile.getAbsolutePath() + "不存在或无权访问!");
             } catch (Exception e) {
                 //那就是还是没找到呗... =,=
             }
 
+            try {
+                //在从别的CLASSPATH中试试
+                //获取当前系统下的所有CLASSPATH
+                String classpathAll = System.getenv().get("CLASSPATH");
+                //解析CLASSPATH
+                classpathAll = classpathAll.replaceFirst("(?m)^.", "")
+                        .replaceAll(";\\.;", ";")
+                        .replaceFirst("(?m);.$", ";");
 
+                String[] classpathAllInArr = classpathAll.split(";");
+
+                for (String s : classpathAllInArr) {
+                    if (!s.equals(classpath)) {
+                        tmpClassFile = new File(s + File.separatorChar + classPathByName + ".class");
+
+                        //检查权限和是否存在
+                        if (tmpClassFile.exists() && tmpClassFile.canRead() && tmpClassFile.canExecute()) {
+                            //Add CLASSPATH
+                            //method.invoke(urlClassLoader, new File(s).toURI().toURL());
+                            //尝试用URLClassLoader加载, 再尝试用load加载
+                            //if ((result = urlClassLoader.loadClass(className)) != null)
+                            //    return result;
+                            //else
+                            if ((result = load(tmpClassFile.getAbsolutePath(), null,
+                                    className.replace(classShortName, "").replaceAll("\\.", ""))) != null)
+                                return result;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                //那就是从别的classpath通过className给定的全限定名没有找到, 这说明使用者对class文件的包名和位置放置不规范
+            }
 
 
             //尝试从依赖这个要加载的class的class的CLASSPATH中遍历(使用NIO.2的特性)找到class
@@ -387,7 +388,7 @@ public class LoadAnyClasses {
                                 if ( path.getFileName() != null &&
                                         path.toFile()
                                                 .getName()
-                                                .contains(classShortName + ".class"))
+                                                .equals(classShortName + ".class"))
                                 {
                                     //Debug...
                                     //System.out.println("找到文件! " + path);
@@ -446,12 +447,11 @@ public class LoadAnyClasses {
             //先找上一个被加载的class所在的CLASSPATH
             String classpath = locatedClasspath(lastClassPath);
 
-
             //从最近的那一个被加载的class所在的classpath找找
             if (classpath != null) {
                 File fileInCurrentClasspath = new File(
                         classpath.charAt(classpath.length() - 1) == File.separatorChar
-                                ? (classpath + name) : (classpath + File.separator + name));
+                                ? (classpath + name) : (classpath + File.separator +  name));
 
                 try {
                     if (fileInCurrentClasspath.exists())
@@ -466,10 +466,10 @@ public class LoadAnyClasses {
             //在从别的CLASSPATH中试试
             //获取当前系统下的所有CLASSPATH
             String classpathAll = System.getenv().get("CLASSPATH");
-            //解析CLASSPATH
-            classpathAll = classpathAll.replaceFirst("(?m)^.", "")
+            //解析CLASSPATH, ;这个路径分隔符应该是适用于Windows(?)
+            classpathAll = classpathAll.replaceFirst("(?m)^\\.;", "")
                     .replaceAll(";\\.;", ";")
-                    .replaceFirst("(?m);.$", ";");
+                    .replaceFirst("(?m);\\.$", ";");
 
             String[] classpathAllInArr = classpathAll.split(";");
 
@@ -479,7 +479,7 @@ public class LoadAnyClasses {
 
                     try {
                         if ((tmpNameFile = new File( s.charAt(s.length() - 1) == File.separatorChar
-                                ? (s + name) : (s + File.separator + name))).exists())
+                                ? (s + name) : (s + File.separator  + name))).exists())
                             return tmpNameFile.toURI().toURL();
                     } catch (MalformedURLException me) {
                         //MalformedURLException...
@@ -585,7 +585,14 @@ public class LoadAnyClasses {
                                     ? "\\\\" : File.separator, ".");
                     classFullName = classFullName.replaceAll("(?m)\\.class$", "");
 
-                    cls = new Loader(args[0]).findClass(classFullName);
+                    try {
+                        cls = new Loader(args[0]).findClass(classFullName);
+                    } catch (ClassNotFoundException | NoClassDefFoundError nce) {
+                        //那就是在Classpath下不过没有包名的class文件
+                        //第二个参数直接为null就好了, ClassLoader自动得出className
+                        cls = new Loader().load(args[0], null);
+                    }
+
                 } else {
                     //第二个参数直接为null就好了, ClassLoader自动得出className
                     cls = new Loader().load(args[0], null);
@@ -627,7 +634,7 @@ public class LoadAnyClasses {
      */
     private static void whenNoneArgs() {
         String classFilePath =
-                "E:\\DCMMC\\Java\\Java\\Algorithms\\tk\\dcmmc\\fundamentals\\Exercises\\BasicProgModel.class";
+                "E:\\DCMMC\\Java\\Java\\Algorithms\\tk\\dcmmc\\fundamentals\\Exercises\\AnalysisOfAlgorithms.class";
 
         Class<?> cls;
         try {
