@@ -405,7 +405,6 @@ class AnalysisOfAlgorithms {
             return -1;
 
         int mid = low + (high - low) / 2;
-        int index;
 
         if (mid - 1 >= 0 && mid + 1 < bitonicArray.length && bitonicArray[mid] > bitonicArray[mid - 1]
                 && bitonicArray[mid] < bitonicArray[mid + 1])
