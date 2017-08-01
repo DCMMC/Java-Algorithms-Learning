@@ -111,6 +111,8 @@ class UnionFindEx {
         //见Algorithms--UnionFind
 
         //Ex 1.5.16
+        title("Ex 1.5.16");
+        
         //从文件读取ints到DoubleLinkedList数组
         try {
             File intsFile = new File(UnionFindEx.class.getResource("mediumUF.txt").toURI());
@@ -168,6 +170,8 @@ class UnionFindEx {
         }
 
         //Ex 1.5.17
+        title("Ex 1.5.17");
+
         o("大小为50的UF在所有sites都连接的时候需要花" + erdosRenyiCount(50) + "次随机连接");
     }
 }///~
