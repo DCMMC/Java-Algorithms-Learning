@@ -54,6 +54,16 @@
 
 * null
 
+## 1.5 Union Find
+
+[**Exercise**](./tk/dcmmc/fundamentals/Exercises/UnionFindEx.java)
+
+(Exercise 1.5.12, 1.5.13, 1.5.16, 1.5.17)
+
+#### Algorithms
+
+* [UnionFind(WQUFPC, Weighted Quick Union and Find with Path Compression)](./tk/dcmmc/fundamentals/Algorithms/UnionFind.java)
+
 ---
 
 # 学习笔记 Notebook
