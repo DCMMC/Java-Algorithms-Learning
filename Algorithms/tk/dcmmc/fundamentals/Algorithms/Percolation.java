@@ -173,8 +173,7 @@ public class Percolation {
         
         //从文件读取ints到DoubleLinkedList数组
         try {
-            File intsFile = new File("E:\\DCMMC\\Java\\Java\\Algorithms\\tk\\dcmmc\\fundamentals\\Algorithms"
-                + "\\percolation-testing\\input6.txt");
+            File intsFile = new File(Percolation.class.getResource("sedgewick60.txt").toURI());
 
             if (intsFile.exists() && intsFile.canRead()) {
                 Scanner sc = new Scanner(new BufferedInputStream(new FileInputStream(intsFile)), "UTF-8");
