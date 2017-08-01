@@ -447,11 +447,19 @@ public class LoadAnyClasses {
             //先找上一个被加载的class所在的CLASSPATH
             String classpath = locatedClasspath(lastClassPath);
 
+
             //从最近的那一个被加载的class所在的classpath找找
             if (classpath != null) {
                 File fileInCurrentClasspath = new File(
                         classpath.charAt(classpath.length() - 1) == File.separatorChar
-                                ? (classpath + name) : (classpath + File.separator +  name));
+                                ? (classpath + name) : (classpath + File.separator + name));
+
+                //如果所在的classpath+name找不到该文件, 就从lastClass所在的目录找该文件
+                if (!fileInCurrentClasspath.exists())
+                    fileInCurrentClasspath = new File(lastClassPath.replaceAll("(?m)"
+                                    + ("\\".equals(File.separatorChar + "") ? "\\\\" : (File.separatorChar + ""))
+                                    + "[a-zA-Z0-9_\\u4e00-\\u9fa5$]+\\.class$"
+                            , ("\\".equals(File.separatorChar + "") ? "\\\\" : (File.separatorChar + ""))) + name);
 
                 try {
                     if (fileInCurrentClasspath.exists())
@@ -466,7 +474,7 @@ public class LoadAnyClasses {
             //在从别的CLASSPATH中试试
             //获取当前系统下的所有CLASSPATH
             String classpathAll = System.getenv().get("CLASSPATH");
-            //解析CLASSPATH, ;这个路径分隔符应该是适用于Windows(?)
+            //解析CLASSPATH
             classpathAll = classpathAll.replaceFirst("(?m)^\\.;", "")
                     .replaceAll(";\\.;", ";")
                     .replaceFirst("(?m);\\.$", ";");
@@ -479,7 +487,7 @@ public class LoadAnyClasses {
 
                     try {
                         if ((tmpNameFile = new File( s.charAt(s.length() - 1) == File.separatorChar
-                                ? (s + name) : (s + File.separator  + name))).exists())
+                                ? (s + name) : (s + File.separator + name))).exists())
                             return tmpNameFile.toURI().toURL();
                     } catch (MalformedURLException me) {
                         //MalformedURLException...
