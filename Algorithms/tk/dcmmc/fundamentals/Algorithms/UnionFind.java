@@ -1,4 +1,4 @@
-//package com.DCMMC.Algorithms;
+package tk.dcmmc.fundamentals.Algorithms;
 
 import java.util.Random;
 
@@ -12,11 +12,17 @@ public class UnionFind {
     //they are connected(i.e. them are in A Connected Components.
     private int[] id;
     //To use quickUnionWeighted method.
-    //
+    //记录每个site下面的子site的个数
     private int[] size;
 
     //number of components
     private int count;
+
+    //for Ex 1.5.16
+    //单次操作的数组访问
+    int cost = 0;
+    //总共的数组访问
+    int total = 0;
 
 
     /**
@@ -57,7 +63,7 @@ public class UnionFind {
      *
      * @return the number of components (between {@code 1} and {@code n})
      */
-    public int count() {
+    public int getCount() {
         return count;
     }
 
@@ -80,6 +86,8 @@ public class UnionFind {
         for(int i = 0; i < id.length; i++)
             if(id[i] == pid)
                 id[i] = qid;
+
+        count--;
     }
 
     /**
@@ -108,6 +116,7 @@ public class UnionFind {
     */
     public void quickUnion(int p, int q) {
         id[p] = q;
+        count--;
     }
 
     /**
@@ -155,7 +164,11 @@ public class UnionFind {
             //This will Decrease the Depth to Depth - 1
             id[index] = id[id[index]];
             index = id[index];
+
+            //for Ex 1.5.16
+            cost += 3;
         }
+
         return index;
     }
 
@@ -184,6 +197,9 @@ public class UnionFind {
     *         p与q相连
     */
     public void quickUnionWeighted(int p, int q) {
+        //for Ex 1.5.16
+        cost = 0;
+        
         int pRootId = compressedRootId(p);
         int qRootId = compressedRootId(q);
 
@@ -192,10 +208,40 @@ public class UnionFind {
         if(size[pRootId] < size[qRootId]) {
             id[pRootId] = qRootId;
             size[qRootId] += size[pRootId];
+
+            //for Ex 1.5.16
+            cost += 2;
         } else {
             id[qRootId] = pRootId;
             size[pRootId] += size[qRootId];
+
+            //for Ex 1.5.16
+            cost += 2;
         }
+
+        count--;
+
+
+        //for Ex 1.5.16
+        total += cost;
+    }
+
+    /**
+    * For Ex 1.5.16
+    * getCost
+    * @return cost
+    */
+    public int getCost() {
+        return cost;
+    }
+
+    /**
+    * For Ex 1.5.16
+    * getTotal
+    * @return total
+    */
+    public int getTotal() {
+        return total;
     }
 
     /**
@@ -220,7 +266,7 @@ public class UnionFind {
 
         //SO , the MOST Efficiency Method is WQUPC (Weighted Quick Union with Path Compression)
         //Any sequence of M union-find ops(abbr. operations) on N objects makes <= c( M + lg* N ) array access
-        //P.S. lg* N is iterate logarithm base 2,it means the number of time to make the lg of N to 1.
+        //P.S. lg* N is iterate logarithm base 2, it means the number of time to make the lg of N to 1.
         //e.g. lg* (2^65535) = 5) What a AMAZING function!
         //But it is impossible to make the Complexity(时间复杂度) to O(N) (i.e.linear线性) as it was be proved by theory.
 

@@ -1,7 +1,3 @@
-//package com.DCMMC.Algorithms;
-
-
-//import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.Stopwatch;
@@ -12,9 +8,21 @@ import edu.princeton.cs.algs4.Stopwatch;
  */
 public class PercolationStats {
     private double[] results;
+    private double mean;
+    private double stddev;
 
-    // perform trials independent experiments on an n-by-n grid
+    /**
+    * perform trials independent experiments on an n-by-n grid
+    * @param n
+    *          grid的大小
+    * @param trials
+    *          尝试trials次试验
+    */
     public PercolationStats(int n, int trials) {
+        //检验参数合法性
+        if (n <= 0 || trials <= 0)
+            throw new IllegalArgumentException("参数不能小于等于0!");
+
         results = new double[trials];
 
         for(int i = 0;i < trials;i++) {
@@ -30,42 +38,51 @@ public class PercolationStats {
             results[i] = (percolationTest.numberOfOpenSites() * 1.0) / (n * n);
         }
 
+        mean = StdStats.mean(results);
+        stddev = StdStats.stddev(results);
     }
 
     // sample mean of percolation threshold
     public double mean() {
-        return StdStats.mean(results);
+        return this.mean;
     }
 
     // sample standard deviation of percolation threshold
     public double stddev() {
-        return StdStats.stddev(results);
+        return this.stddev;
     }
 
     // low  endpoint of 95% confidence interval
     public double confidenceLo() {
-        return mean() - (1.96 * stddev() / Math.sqrt(results.length));
+        return mean - (1.96 * stddev / Math.sqrt(results.length));
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return mean() + (1.96 * stddev() / Math.sqrt(results.length));
+        return mean + (1.96 * stddev / Math.sqrt(results.length));
     }
 
-    // test client (described below)
+    /**
+    * test client (described below)
+    * @param args 
+    *           commandline arguments
+    */
     public static void main(String[] args) {
         Stopwatch watch = new Stopwatch();
-        Integer n = new Integer(args[0]);
-        Integer T = new Integer(args[1]);
+        //从commanline读取n和t
+        int n = Integer.parseInt(args[0]);
+        int t = Integer.parseInt(args[1]);
 
-        //Integer n = StdIn.readInt();
-        //Integer T = StdIn.readInt();
+        //Debug
+        //int n = 800;
+        //int t = 100;
 
-        PercolationStats ps = new PercolationStats(n, T);
+        PercolationStats ps = new PercolationStats(n, t);
 
-        System.out.println("mean                    = "+String.format("%-20.19f", ps.mean()) + "\n"
-                         + "stddev                  = "+String.format("%-20.19f", ps.stddev()) + "\n"
-                         + "95% confidence interval = ["+String.format("%-20.19f, %-20.19f", ps.confidenceLo(), ps.confidenceHi())+"]\n");
+        System.out.println("mean                    = " + String.format("%-20.19f", ps.mean()) + "\n"
+                         + "stddev                  = " + String.format("%-20.19f", ps.stddev()) + "\n"
+                         + "95% confidence interval = [" + String.format("%-20.19f, %-20.19f", ps.confidenceLo(), ps.confidenceHi())+"]\n");
+        
         System.out.println("Total time : " + watch.elapsedTime() + " seconds.");
     }
 }
