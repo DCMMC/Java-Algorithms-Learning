@@ -54,7 +54,7 @@
 
 * null
 
-## 1.5 Union Find
+### 1.5 Union Find
 
 [**Exercise**](./tk/dcmmc/fundamentals/Exercises/UnionFindEx.java)
 
@@ -63,6 +63,16 @@
 #### Algorithms
 
 * [UnionFind(WQUFPC, Weighted Quick Union and Find with Path Compression)](./tk/dcmmc/fundamentals/Algorithms/UnionFind.java)
+
+## Chapter 2 Sorting
+
+### 2.1 Elementary Sorts
+
+[**Exercise**](./tk/dcmmc/)
+
+#### Algorithms
+
+* null
 
 ---
 
