@@ -68,13 +68,14 @@
 
 ### 2.1 Elementary Sorts
 
-[**Exercise**](./tk/dcmmc/)
+[**Exercise**](./tk/dcmmc/sorting/Exercise/)
 
 #### Algorithms
 
 * [SelectionSort](./tk/dcmmc/sorting/Algorithms/SelectionSort.java)
 * [InsertionSort](./tk/dcmmc/sorting/Algorithms/InsertionSort.java)
 * [ShellSort](./tk/dcmmc/sorting/Algorithms/ShellSort.java)
+* [ArrayShuffle]((./tk/dcmmc/sorting/Algorithms/ArrayShuffle.java)
 
 ---
 
