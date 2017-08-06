@@ -116,7 +116,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
          *         如果在迭代期间, List被修改, 就抛出异常
          */
         @Override
-        public Item next() {
+        public Item next() throws ConcurrentModificationException {
             if (opsCntCopy != opsCnt)
                 throw new ConcurrentModificationException();
 
@@ -134,6 +134,30 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
     /**************************************
      * Methods                            *
      **************************************/
+
+    /**
+    * 返回由DoubleLinkedList表示的数组(FIFO)
+    */
+    @SuppressWarnings("unchecked")
+    public Item[] toArray() {
+        if (first.item == null)
+            return null;
+
+        Item[] array = (Item[])java.lang.reflect.Array.newInstance(first.item.getClass(), getSize());
+        //不能像下面这样做, 因为实质性的array还是Object[], 而上面的虽然转换成了Object(Item[]), 但是通过RTTI可以知道其是一个Item所属的
+        //引用类型的数组
+        //Item[] array = (Item[])new Object[getSize()];
+
+        ReverseArrayIterator iter = new ReverseArrayIterator();
+
+        int index = 0;
+
+        while (iter.hasNext())
+            array[index++] = iter.next();
+
+        return array;
+    }
+
     /**
      * 从DoubleLinkedList中的前端添加新的元素(模拟LIFO)
      * @param item 新元素
@@ -271,18 +295,28 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
 
     /**
      * 返回List前端的元素, 并把该元素从List中删除.(模拟LIFO)
+     * @throws NoSuchElementException
+     * if the client attempts to remove an item from an empty list
      * @return List前端第一个元素
      */
     public Item popFirst() {
+        if (getSize() == 0)
+            throw new NoSuchElementException("This Deque is empty!");
+
         return pop(0);
     }
 
     /**
      * 返回List后端的元素, 并把该元素从List中删除.(模拟FIFO)
+    * @throws NoSuchElementException
+    * if the client attempts to remove an item from an empty list
      * @return List后端最后一个元素
      */
     @SuppressWarnings("unchecked")
     public Item popLast() {
+        if (getSize() == 0)
+            throw new NoSuchElementException("This Deque is empty!");
+
         Item lastItem = last.item;
 
         //如果只有一个元素
@@ -536,7 +570,13 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
         //array to Linked List
         //Primitive type array
         int[] array = {1, 3, 5, 7};
-        o(new DoubleLinkedList(array));
+        o(new DoubleLinkedList<Integer>(array));
+
+        //test toArray
+        o("test toArray()");
+        for (Integer i : new DoubleLinkedList<Integer>(array).toArray())
+            System.out.print(" " + i);
+        o();
 
         //Reference type array
         Integer[] integerArray = {1, 3, 5, 7};
