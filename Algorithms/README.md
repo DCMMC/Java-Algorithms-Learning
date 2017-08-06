@@ -75,7 +75,7 @@
 * [SelectionSort](./tk/dcmmc/sorting/Algorithms/SelectionSort.java)
 * [InsertionSort](./tk/dcmmc/sorting/Algorithms/InsertionSort.java)
 * [ShellSort](./tk/dcmmc/sorting/Algorithms/ShellSort.java)
-* [ArrayShuffle]((./tk/dcmmc/sorting/Algorithms/ArrayShuffle.java)
+* [ArrayShuffle](./tk/dcmmc/sorting/Algorithms/ArrayShuffle.java)
 
 ---
 
