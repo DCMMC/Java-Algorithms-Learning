@@ -117,6 +117,21 @@ public class Stack<Item> implements Iterable<Item> {
     }
 
     /**
+    * 从Stack中取出最后一个添加到Stack的元素, 并且不会把这个元素从Stack中删除, 这里会把元素强制向下转型
+    * @return 最后一个添加到Stack的元素
+    */
+    @SuppressWarnings("unchecked")
+    public Item peek() {
+        //如果size等于Stack的1/4就resize到MAXSIZE / 2
+        if (isEmpty())
+            return null;
+        else if (size > 0 && size == MAXSIZE / 4)
+            resize(MAXSIZE / 2);
+
+        return (Item)elements[size - 1];
+    }
+
+    /**
     * 获得当前Stack存储了多少个元素
     * @return 当前Stack存储的多少个元素
     */

@@ -3,6 +3,7 @@ package tk.dcmmc.fundamentals.Algorithms;
 import java.util.Iterator;
 import java.lang.reflect.Array;
 import java.util.ConcurrentModificationException;
+import java.util.NoSuchElementException;
 
 /**
  * class comment : Generic Type Double Linked List(DLLists)

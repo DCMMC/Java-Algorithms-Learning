@@ -8,6 +8,7 @@ import edu.princeton.cs.algs4.StdRandom;
 
 /**
 * 函数式接口, 用于接收方法引用
+* 
 */
 @FunctionalInterface
 interface SortFunc {
@@ -16,6 +17,8 @@ interface SortFunc {
 
 /**
 * 对多种Sort实现进行测试
+* Created on 2017/8/4
+* Finished on 2017/8/
 * @author DCMMC
 * @since 1.8
 */
