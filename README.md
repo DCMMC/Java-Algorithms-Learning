@@ -127,7 +127,7 @@ MyJava_SublimeConsole.sublime-build:
 
 ### 重新打开Sublime Text3, 在Tools -> Build System中选择要用的编译脚本, 按Ctril+B编译运行.
 
-> 上述所有文件均可在[Workspace]()中找到
+> 上述所有文件均可在[Workspace](https://github.com/DCMMC/Java/tree/master/Algorithms/tk/dcmmc/workspace)中找到
 
 ## 笔记
 
