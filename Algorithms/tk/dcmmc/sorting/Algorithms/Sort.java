@@ -19,6 +19,7 @@ class Sort {
 
 	/**
 	* 交换数组a中i, j对应的index的元素的值, 这里不做i, j合法性检验
+	* 参见Ex 2.1.25, exch对于tmp的开销还是比较大的
 	* @param a
 	*			目标数组
 	* @param i
@@ -32,4 +33,4 @@ class Sort {
 		a[j] = tmp;
 	}
 
-}
+}///~

@@ -56,6 +56,13 @@ class ShellSort extends Sort {
 
 		while (h < a.length/3)
 			h = h*3 + 1;//by Knuth
+		//Ex 2.1.11
+		//还可以把上述生成的increment sequence 保存在数组中
+		//DoubleLinkedList<Integer> list = new DoubleLinkedList<>();
+		//list.addLast(1);
+		//while (h < a.length / 3)
+		//	list.addLast(list.get(list.getSize() - 1) * 3 + 1);
+		//int[] incrementSeq = list.toArray();
 
 		//以这个h构成一个后项是前项的1/3(约)的序列
 		while (h >= 1) {

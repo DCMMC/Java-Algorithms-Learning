@@ -15,6 +15,10 @@ import edu.princeton.cs.algs4.StdRandom;
  * @since 1.5
  */
 class AnalysisOfAlgorithms {
+    /**************************************
+     * Methods                            *
+     **************************************/
+    
     /**
      * Ex 1.4.9
      * 暴力算法ThreeSum
