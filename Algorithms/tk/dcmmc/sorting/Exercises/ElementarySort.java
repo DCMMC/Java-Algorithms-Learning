@@ -10,6 +10,7 @@ import tk.dcmmc.fundamentals.Algorithms.DoubleLinkedList;
 * 初级排序算法
 * Ex 2.1
 * Create on 2017/8/7
+* Finish on 2017/8/7
 * @author DCMMC
 * @since 1.5
 */
@@ -69,7 +70,7 @@ class ElementarySort {
     }
 
     /**
-     * 可视化的ShellSort
+     * 可以查看Trace的InsertionSort
      * @param a
      *          要排序的数组
      */
@@ -96,6 +97,13 @@ class ElementarySort {
 
     }
 
+
+    /**
+    * 可视化的Shell Sort
+    * @param a
+    *       要排序的数组
+    */
+    @SuppressWarnings("unchecked")
     public static void shellSortAnimation(Comparable[] a) {
         ItemOriginIndex[] copy = new ItemOriginIndex[a.length];
         for (int i = 0; i < a.length; i++) {
@@ -276,7 +284,7 @@ class ElementarySort {
         //原理类似于Ex 2.1.17 & 2.1.18
         title("shellSortAnimation");
 
-        int size = 60;
+        int size = 40;
         Integer[] array = new Integer[size];
         for (int i = 0; i < array.length; i++)
             array[i] = i;
