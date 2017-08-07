@@ -68,7 +68,9 @@
 
 ### 2.1 Elementary Sorts
 
-[**Exercise**](./tk/dcmmc/sorting/Exercise/)
+[**Exercise**](./tk/dcmmc/sorting/Exercises/ElementarySort.java)
+
+(Exercise 2.1.3 2.1.4 2.1.11 2.1.13 2.1.14 2.1.15 2.1.16 2.1.17 2.1.18 2.1.20 2.1.24 2.1.25 2.1.26 2.1.29)
 
 #### Algorithms
 
