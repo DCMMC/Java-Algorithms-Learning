@@ -123,7 +123,7 @@ MyJava_SublimeConsole.sublime-build:
 }
 ```
 
-> 因为Sublime Text3保存源码的默认格式是UTF-8，所以需要将"encoding": 设置为UTF-8
+> 因为Sublime Text3保存源码的默认格式是UTF-8，所以需要将"encoding": 设置为GBK
 
 ### 重新打开Sublime Text3, 在Tools -> Build System中选择要用的编译脚本, 按Ctril+B编译运行.
 
