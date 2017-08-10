@@ -1,5 +1,8 @@
 # Java 学习
 
+> 欢迎想和我讨论关于一下书籍的内容的人给我提Issues, 当然也可以和我qq交流(97294597).
+> Welcome to discuss with me about the contents of the books below, you can add an issue or chat with me in QQ(97294597). :)
+
 ---
 
 ## 参考书籍:
