@@ -1,6 +1,7 @@
 # Java 学习
 
-[![npm](https://img.shields.io/npm/l/express.svg)]()
+[![npm](https://img.shields.io/npm/l/express.svg)]
+![StillCoding](https://img.shields.io/badge/Still-Coding-green.svg)
 
 > 欢迎想和我讨论关于一下书籍的内容的人给我提Issues, 当然也可以和我qq交流(97294597).
 >
