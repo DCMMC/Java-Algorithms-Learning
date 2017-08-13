@@ -19,6 +19,8 @@
 
 #### Algorithms
 
+* [BinarySearch] (.tk/dcmmc/fundamentals/Algorithms/BinarySearch.java)
+
 * [Euclid's algorithm](./tk/dcmmc/fundamentals/Algorithms/EuclidGCD.java): Computer the GCD(Greatest Common Divisor) of two nonzero integers.
 
 ### 1.2 Data Abstraction
@@ -37,12 +39,16 @@
 
 (Exercise 1.3.3, 1.3.4, 1.3.9, 1.3.10, 1.3.11, 1.3.31, 1.3.32, 1.3.33, 1.3.37, 1.3.49, 1.3.50)
 
-#### Algorithms
+#### Algorithms/ADTs
 
-* [Bag](./tk/dcmmc/fundamentals/Algorithms/Bag.java)
-* [Stack](./tk/dcmmc/fundamentals/Algorithms/Stack.java)
-* [Queue](./tk/dcmmc/fundamentals/Algorithms/Queue.java)
-* [DoubleLinkedList](./tk/dcmmc/fundamentals/Algorithms/DoubleLinkedList.java)
+* [Bag(imeplemented by Single Linked List)](./tk/dcmmc/fundamentals/Algorithms/Bag.java)
+* [Stack(implemented by resizing-capacity array)](./tk/dcmmc/fundamentals/Algorithms/Stack.java)
+* [Queue(imeplemented by Single Linked List)](./tk/dcmmc/fundamentals/Algorithms/Queue.java)
+* [DoubleLinkedList(implemented by Double Linked List)](./tk/dcmmc/fundamentals/Algorithms/DoubleLinkedList.java)
+
+#### Applications 
+
+* [Dijkstra双栈算术表达式求值算法](./tk/dcmmc/fundamentals/Algorithms/Stack.java)
 
 ### 1.4 Analysis of Algorithms
 
@@ -54,6 +60,10 @@
 
 * null
 
+#### Applications
+
+* [3-sum](./tk/dcmmc/fundamentals/Exercises/AnalysisOfAlgorithms.java)
+
 ### 1.5 Union Find
 
 [**Exercise**](./tk/dcmmc/fundamentals/Exercises/UnionFindEx.java)
@@ -63,6 +73,10 @@
 #### Algorithms
 
 * [UnionFind(WQUFPC, Weighted Quick Union and Find with Path Compression)](./tk/dcmmc/fundamentals/Algorithms/UnionFind.java)
+
+#### Applications
+
+* [Percolation](./tk/dcmmc/fundamentals/Algorithms/Percolation.java)
 
 ## Chapter 2 Sorting
 
