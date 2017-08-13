@@ -7,7 +7,7 @@ import edu.princeton.cs.algs4.StdRandom;
 import tk.dcmmc.fundamentals.Algorithms.DoubleLinkedList;
 
 /**
-* 初级排序算法
+* 初级排序算法练习
 * Ex 2.1
 * Create on 2017/8/7
 * Finish on 2017/8/7
@@ -15,6 +15,9 @@ import tk.dcmmc.fundamentals.Algorithms.DoubleLinkedList;
 * @since 1.5
 */
 class ElementarySort {
+    /**************************************
+     * InnerClass                         *
+     **************************************/
     /**
     * 用于存储排序前数组中元素的index
     */
@@ -113,10 +116,17 @@ class ElementarySort {
         }
         Arrays.sort(copy);
         int[] heights = new int[a.length];
+        
         int height = 1;
-
+        Comparable lastValue = copy[0].a;
+        heights[0] = height;
         for (ItemOriginIndex i : copy) {
-            heights[i.index] = height++;
+            if (i.a.compareTo(lastValue) > 0) {
+                lastValue = i.a;
+                heights[i.index] = ++height;
+            } else {
+                heights[i.index] = height;
+            }
         }
 
         StdDraw.clear();
@@ -287,7 +297,7 @@ class ElementarySort {
         int size = 40;
         Integer[] array = new Integer[size];
         for (int i = 0; i < array.length; i++)
-            array[i] = i;
+            array[i] = StdRandom.uniform(array.length);
         StdRandom.shuffle(array);
 
         shellSortAnimation(array);

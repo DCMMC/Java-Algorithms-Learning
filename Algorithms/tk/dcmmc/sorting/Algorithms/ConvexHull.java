@@ -80,7 +80,7 @@ class ConvexHull {
         //凸包测试样本生成器
         String outputName = "convexHullSample.txt";
 
-        System.out.println("请在程序中长按回车停止样本生成器并开始查找凸包的点.");
+        System.out.println("请在程序中按回车停止样本生成器并开始查找凸包的点.");
 
         StringBuilder outputPoints = new StringBuilder();
 
@@ -101,7 +101,7 @@ class ConvexHull {
                 break;
 
             //不停一下, 就会收到一堆重复的值
-            StdDraw.pause(100);
+            StdDraw.pause(110);
 
         }
 

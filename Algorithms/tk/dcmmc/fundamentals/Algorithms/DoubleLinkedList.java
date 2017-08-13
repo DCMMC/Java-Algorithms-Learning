@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.lang.reflect.Array;
 import java.util.ConcurrentModificationException;
 import java.util.NoSuchElementException;
+import java.util.Comparator;
+import java.util.Random;
 
 /**
  * class comment : Generic Type Double Linked List(DLLists)
@@ -433,6 +435,48 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
     }
 
     /**
+    * Ex 2.2.17
+    * mergesort the list
+    */
+    public void mergesort() {
+        //check
+        if ( first.item == null || !(first.item instanceof Comparable) )  {
+            //err
+            System.out.println("the items (" + first.item.getClass() + ") stored in List are not intanceof Comparable,"
+            +  "you can use the Comparator version of mergesort.");
+            return;
+        }
+
+        //创建辅助数组, 只额外分配一次
+        Comparable[] auxLocal = new Comparable[getSize()];
+
+        sort(auxLocal, 0, getSize() - 1);
+    }
+
+    /**
+    * Ex 2.2.17
+    * mergesort the list with Comparator
+    * @param comp
+    *           比较器
+    */
+    public void mergesort(Comparator comp) {
+        //创建辅助数组, 只额外分配一次
+        Object[] auxLocal = new Object[getSize()];
+
+        sort(comp, auxLocal, 0, getSize() - 1);
+    }
+
+    /**
+    * Ex 2.2.18
+    * 有点难度
+    * Shuffling linked list using divide-and-conquer design diagram
+    */
+    public void shuffle() {
+        
+    }
+    
+
+    /**
      * 获得当前Stack存储了多少个元素
      * @return 当前Stack存储的多少个元素
      */
@@ -493,6 +537,169 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
                 + "型元素.)");
 
         return info;
+    }
+
+    /**
+    * Ex 2.2.17
+    * 采用自顶向下的方法(递归)排序List中的指定的部分
+    * @param aux
+    *       局部暂存数组
+    * @param lo
+    *       要排序的部分的第一个元素的下标
+    * @param hi
+    *       要排序的部分的最后一个元素的下标
+    */
+    private void sort(Comparable[] aux, int lo, int hi) {
+        //当只有一个元素的时候, 这个子序列一定是排序好的了, 所以这就作为递归结束的条件
+        if (lo >= hi)
+            return;
+
+        int mid = lo + (hi - lo) / 2;
+
+        //下述代码形成一个二叉树形结构, 或者用trace表示为一个自顶向下的结构(top-down)
+        //sort left half
+        sort(aux, lo, mid);
+        //sort right half
+        sort(aux, mid + 1, hi);
+
+        //merge才是真正的比较的地方, 上面的代码只是会形成二叉树, 真正的比较是在merge中
+        merge(aux, lo , mid, hi);
+    }
+
+    /**
+    * Ex 2.2.17
+    * merge(optimized version)
+    * @param aux
+    *       暂存数组, 有方法参数传递, 使用方法局部变量
+    * @param lo
+    *       要归并的前半部分的起始下标
+    * @param mid
+    *       要归并的前半部分的最后一个元素的下标
+    * @param hi
+    *       要归并的后半部分的最后一个元素的下标
+    */
+    @SuppressWarnings("unchecked")
+    private void merge(Comparable[] aux, int lo, int mid, int hi) {
+        //check是否本身lo...hi就已经是排序好的了, 提高效率
+        if ( ((Comparable)get(mid)).compareTo((Comparable)get(mid + 1)) <= 0) 
+            return;
+
+        //先将数据暂存在辅助数组中
+        for (int i = lo; i <= hi; i++)
+            aux[i] = (Comparable)get(i);
+
+
+        //i, j分别为两部分的第一个元素的下标
+        int i = lo;
+        int j = mid + 1;
+        //归并
+        //先找到lo所在的结点
+        Node current = first;
+        int index = 0;
+
+        while (index++ != lo) {
+            current = current.next;
+        }
+
+        //前面index++, 这里一定要记得减回去
+        index--;
+
+        while (index <= hi) {
+            if (i > mid)
+                current.item = (Item)aux[j++];
+            else if (j > hi)
+                current.item = (Item)aux[i++];
+            else if (aux[j].compareTo(aux[i]) < 0)
+                current.item = (Item)aux[j++];
+            else 
+                current.item = (Item)aux[i++];
+
+            current = current.next;
+            index++;
+        }
+    }
+
+    /**
+    * Ex 2.2.17
+    * 采用自顶向下的方法(递归)和给定的Comparator排序List中的指定的部分
+    * @param comp
+    *       比较器
+    * @param aux
+    *       局部暂存数组
+    * @param lo
+    *       要排序的部分的第一个元素的下标
+    * @param hi
+    *       要排序的部分的最后一个元素的下标
+    */
+    private void sort(Comparator comp, Object[] aux, int lo, int hi) {
+        //当只有一个元素的时候, 这个子序列一定是排序好的了, 所以这就作为递归结束的条件
+        if (lo >= hi)
+            return;
+
+        int mid = lo + (hi - lo) / 2;
+
+        //下述代码形成一个二叉树形结构, 或者用trace表示为一个自顶向下的结构(top-down)
+        //sort left half
+        sort(comp, aux, lo, mid);
+        //sort right half
+        sort(comp, aux, mid + 1, hi);
+
+        //merge才是真正的比较的地方, 上面的代码只是会形成二叉树, 真正的比较是在merge中
+        merge(comp, aux, lo , mid, hi);
+    }
+
+    /**
+    * Ex 2.2.17
+    * merge(optimized version) with Comparator
+    * @param comp
+    *       比较器
+    * @param aux
+    *       暂存数组, 有方法参数传递, 使用方法局部变量
+    * @param lo
+    *       要归并的前半部分的起始下标
+    * @param mid
+    *       要归并的前半部分的最后一个元素的下标
+    * @param hi
+    *       要归并的后半部分的最后一个元素的下标
+    */
+    @SuppressWarnings("unchecked")
+    private void merge(Comparator comp, Object[] aux, int lo, int mid, int hi) {
+        //check是否本身lo...hi就已经是排序好的了, 提高效率
+        if ( comp.compare(get(mid), get(mid + 1)) <= 0) 
+            return;
+
+        //先将数据暂存在辅助数组中
+        for (int i = lo; i <= hi; i++)
+            aux[i] = get(i);
+
+        //i, j分别为两部分的第一个元素的下标
+        int i = lo;
+        int j = mid + 1;
+        //归并
+        //先找到lo所在的结点
+        Node current = first;
+        int index = 0;
+
+        while (index++ != lo) {
+            current = current.next;
+        }
+
+        //前面index++, 这里一定要记得减回去
+        index--;
+
+        while (index <= hi) {
+            if (i > mid)
+                current.item = (Item)aux[j++];
+            else if (j > hi)
+                current.item = (Item)aux[i++];
+            else if (comp.compare(aux[j], aux[i]) < 0)
+                current.item = (Item)aux[j++];
+            else 
+                current.item = (Item)aux[i++];
+
+            current = current.next;
+            index++;
+        }
     }
 
 

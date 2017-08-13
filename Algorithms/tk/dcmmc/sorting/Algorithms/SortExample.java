@@ -167,9 +167,14 @@ public class SortExample {
 
                 Integer[] array = a.toArray();
 
-                sort(InsertionSort::insertionSort, array);
+                //sort(InsertionSort::insertionSort, array);
 
-                //System.out.println(new DoubleLinkedList<>(array));
+                //Test mergesort
+
+                sort(MergeSort::mergeSort, array);
+
+                System.out.println(new DoubleLinkedList<>(array));
+
             } else {
                 //Debug...
                 System.out.println("File not found....");
@@ -183,7 +188,7 @@ public class SortExample {
         //比较各个算法的时间
         title("");
 
-        String alg1 = "Shell";
+        String alg1 = "Merge";
         String alg2 = "Insertion";
 
         int arraySize = 100000;
@@ -196,5 +201,6 @@ public class SortExample {
         	alg2, t1, t2 );
 
         
+
 	}
 }///~

@@ -31,7 +31,7 @@ public class BasicProgModel {
     }
 
     //BinarySearch(嵌套类)
-    private static class BinarySearch {
+    public static class BinarySearch {
         /**
          * Ex 1.1.29
          * 用二分搜索法找到数组中任意一个a的index然后再往前去找到最前面的那一个a的index(如果有的话),
