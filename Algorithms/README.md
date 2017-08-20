@@ -112,11 +112,11 @@
 
 (Exercise )
 
-**TODO **
+**TODO**
 
 #### Algorithms
 
-* [QuickSort]((./tk/dcmmc/sorting/Algorithms/QuickSort.java)
+* [QuickSort](./tk/dcmmc/sorting/Algorithms/QuickSort.java)
 
 ---
 
