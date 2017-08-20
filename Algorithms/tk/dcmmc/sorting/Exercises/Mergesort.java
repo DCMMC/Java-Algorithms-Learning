@@ -4,6 +4,7 @@ import tk.dcmmc.sorting.Algorithms.MergeSort;
 import edu.princeton.cs.algs4.StdRandom;
 import tk.dcmmc.fundamentals.Algorithms.DoubleLinkedList;
 import tk.dcmmc.fundamentals.Algorithms.BinarySearch;
+import java.util.LinkedHashMap;
 
 /**
 * 归并排序算法练习
@@ -14,6 +15,19 @@ import tk.dcmmc.fundamentals.Algorithms.BinarySearch;
 * @since 1.5
 */
 class Mergesort {
+    /**
+    * 一个简单的壳, 用来封装将要在lanbda表达式中被改变的外部变量
+    */
+    private static class Shell<T> {
+        T t;
+
+        private Shell() { }
+
+        Shell(T t) {
+            this.t = t;
+        }
+    }
+
 	/**************************************
      * Methods                            *
      **************************************/
@@ -157,10 +171,6 @@ class Mergesort {
     *       target array
     * @return
     *       不改变a的值, 输出一个a中值如果按照由小到大的顺序排列的下标
-    * @param lo
-    *        low index
-    * @param hi
-    *        high index
     */ 
     private static int[] indirectMergeSort(final Comparable[] a) {
         return indirectMergeSort(a, 0, a.length - 1);
@@ -432,9 +442,60 @@ class Mergesort {
         //也可以通过SortCompare进行比较
 
         //Ex 2.2.25
-        //分析算法
+        //分析算法, 然而我觉得multiway mergesort只不过是形成的比较树的深度小一些(<= log_k N), 不过每一层的比较次数增加为nlogk
+        //合起来我怎么感觉还是nlogn
+        title("Ex 2.2.25");
 
-        //Ex 2.2.29
+        //test = new Integer[]{5, -1, 5, 41, -11, 3423};
+        of("size     k k-way 2-way ratio(based 2-way)\n");
+        int trials = 25;
+        for (int i = 0; i < trials; i++) {
+            size = StdRandom.uniform(120_000, 160_000);
+            test = new Integer[size];
+            for (int j = 0; j < size; j++)
+                test[j] = StdRandom.uniform(size / 2);
+            StdRandom.shuffle(test);
 
+            long start = System.currentTimeMillis();
+            MergeSort.mergeSortMultiway(test, (int)Math.sqrt(test.length));
+            double time1 = (System.currentTimeMillis() - start) / 1000.0;
+
+            StdRandom.shuffle(test);
+            start = System.currentTimeMillis();
+            MergeSort.mergeSort(test);
+            double time2 = (System.currentTimeMillis() - start) / 1000.0;
+
+            of("%4d %4d %6.3f %6.3f %6.3f\n", size, (int)Math.sqrt(test.length), time1, time2, time2 / time1);
+        }
+        
+        //test different k
+        size = 160_000;
+        test = new Integer[size];
+        LinkedHashMap<Integer, Double> k_with_time = new LinkedHashMap<>();
+
+        for (int j = 0; j < size; j++)
+            test[j] = StdRandom.uniform(size / 2);
+            
+        for (int k = 2; k <= (int)Math.sqrt(size); k++) {
+            StdRandom.shuffle(test);
+            long start = System.currentTimeMillis();
+            MergeSort.mergeSortMultiway(test, k);
+            k_with_time.put(k, (System.currentTimeMillis() - start) / 1000.0);
+        }
+
+        final Shell<Integer> minK = new Shell<>(2);
+        final Shell<Double> minTime = new Shell<>(k_with_time.get(2));
+        
+        k_with_time.forEach((integer, aDouble) -> {
+            if (minTime.t > aDouble) {
+                minTime.t = aDouble;
+                minK.t = integer;
+            }
+        });
+        
+        o("速度最快的k是: " + minK.t + " (" + minTime.t + "s)");
+
+        //Ex 2.2.29 
+        //logM (M为原数组中自然形成的顺序子串的数目)
 	}
 }///~
