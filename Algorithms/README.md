@@ -94,6 +94,30 @@
 * [ArrayShuffle](./tk/dcmmc/sorting/Algorithms/ArrayShuffle.java) (by Donald Knuth)
 * [ConvexHull](./tk/dcmmc/sorting/Algorithms/ConvexHull.java)(凸包问题)
 
+### 2.2 Merge Sort
+
+[**Exercise**](./tk/dcmmc/sorting/Exercises/Mergesort.java)
+
+(Exercise 2.2.4 2.2.8 2.2.9 2.2.10 2.2.11 2.2.16 2.2.17 2.2.19 2.2.20 2.2.21 2.2.23 2.2.25 2.2.29)
+
+**TODO Ex 2.2.12 Ex 2.2.18**
+
+#### Algorithms
+
+* [MergeSort](./tk/dcmmc/sorting/Algorithms/MergeSort.java)
+
+### 2.3 Quick Sort
+
+[**Exercise**](./tk/dcmmc/sorting/Exercises/QuicksortEx.java)
+
+(Exercise )
+
+**TODO**
+
+#### Algorithms
+
+* [QuickSort](./tk/dcmmc/sorting/Algorithms/QuickSort.java)
+
 ---
 
 # 学习笔记 Notebook
