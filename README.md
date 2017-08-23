@@ -1,9 +1,11 @@
-# Java 学习
+# Java Learning
 
 ![npm](https://img.shields.io/npm/l/express.svg)
 ![StillCoding](https://img.shields.io/badge/Still-Coding-green.svg)
 ![Java入门](https://img.shields.io/badge/Java-%E5%85%A5%E9%97%A8-blue.svg)
 ![WeChatID](https://img.shields.io/badge/WeChat-Kevin--0220-red.svg)
+
+**Star me if you like it!**
 
 > 欢迎想和我讨论关于一下书籍的内容的人给我提Issues, 当然也可以和我qq交流(97294597).
 >
@@ -11,7 +13,7 @@
 
 ---
 
-## 参考书籍:
+## 参考书籍(Reference books):
 
 *Thinking to Java 4th Edition* //里面涉及了很多设计模式相关的知识, 用作入门书还行, 不过书中设计模式相关的东西看起来就会有点吃力
 
@@ -21,7 +23,7 @@
 
 ---
 
-# 工作环境
+# 工作环境(Work Space)
 
 ## IDE
 
