@@ -110,13 +110,19 @@
 
 [**Exercise**](./tk/dcmmc/sorting/Exercises/QuicksortEx.java)
 
-(Exercise )
+(Exercise 2.3.6 2.3.8 2.3.11 2.3.13 2.3.16 2.3.17 2.3.18 2.3.19 2.3.20 2.3.21 2.3.22 2.3.23 2.3.24 2.3.25)
 
-**TODO**
+**TODO Ex 2.3.10 Ex 2.3.14 Ex 2.3.15  **
 
 #### Algorithms
 
 * [QuickSort](./tk/dcmmc/sorting/Algorithms/QuickSort.java)
+
+### 2.4 Priority Queues
+
+#### Algorithms
+
+#### Exercise
 
 ---
 
