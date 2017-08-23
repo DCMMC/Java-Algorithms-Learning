@@ -1,5 +1,7 @@
 package tk.dcmmc.sorting.Algorithms;
 
+//debug
+import tk.dcmmc.fundamentals.Algorithms.DoubleLinkedList;
 
 /**
 * 归并排序法
@@ -10,7 +12,7 @@ package tk.dcmmc.sorting.Algorithms;
 public class MergeSort extends Sort {
 	/**
 	* 内部类
-	* 为了那该死的判断a[mid] <= a[mid + 1]的情况, 为了把auxLocal的成果转移到a去, 可是这Java所有方法参数都是pass by value的,
+	* 为了那该死的判断a[mid] <= a[mid + 1]的情况, 为了把auxLocal的成果转移到a去, 可是这Java所有方法参数都是passed by value的,
 	* 不得不创建一个Pointer类来封装应用, 以达到C语言指针的效果...
 	*/
 	private static class Pointer<ReferenceType> {
@@ -139,6 +141,72 @@ public class MergeSort extends Sort {
 
 		//System.out.println("debug: " + debug);
 			
+    }
+
+    /**
+    * Ex 2.2.25
+    * Multiway mergesort
+    * @param a
+    *		要排序的数组
+    * @param ways
+    *		每次mergesort会将数组拆分为ways个分支, ways为大于等于2的整数
+    */
+    public static void mergeSortMultiway(Comparable[] a, int ways) {
+    	if (ways < 2 || ways > a.length) {
+    		System.out.println("ways值非法!");
+    		return;
+    	}
+
+    	//创建辅助数组, 只额外分配一次
+		aux = new Comparable[a.length];
+
+		mergeSortMultiway(a, 0, a.length - 1, ways);
+    }
+    /**
+    * Ex 2.2.25
+    * Multiway mergesort
+    * @param a
+	*		目标数组
+	* @param lo
+	*		要归并的部分的起始下标
+	* @param hi
+	*		要归并的部分的最后一个元素的下标
+	* @param ways
+	*		每次mergesort会将数组拆分为ways个分支, ways为大于等于2的整数, 这里不作合法性校验
+    */
+    @SuppressWarnings("unchecked")
+    private static void mergeSortMultiway(Comparable[] a, int lo, int hi, int ways) {
+    	//递归边界, 数组个数不足以分成不为空的ways个子数组的时候, 就是边界
+    	if (lo >= hi || (hi - lo + 1) / ways == 0)
+    		return;
+
+    	//len = ceil(length(array) / ways), 也就是分为ways块, 且每块的元素都是len或者小于len(最后一块小于len)
+    	int len = (int)Math.ceil((hi - lo + 1) / ways);
+    	if (len >= 2) {
+    		for (int i = 0; i < ways - 1; i++) {
+    			mergeSortMultiway(a, lo + i * len, lo + (i + 1) * len - 1, ways);
+    		}
+    		mergeSortMultiway(a, lo + (ways - 1) * len, hi, ways);
+    	}
+    	
+
+    	//multiway merge implemented by bottom-top iterative 2-way merge
+    	//\Theta(n log(ways)) time
+    	//TODO 优化当ways个子数组中除了有一个子数组的元素不止一个之外其他的数组的元素都只有一个的时候, 据说(Wikipedia)可以优化到
+    	//TODO O(N)的时间复杂度
+    	//\Theta(n) space
+    	for (int sz = len; sz < hi - lo + 1; sz *= 2)
+    		//i就是每一次2-way merge的左半部分的第一个元素的下标, i + sz 表示右半部分的第一个元素的下标, 
+    		//如果最后一块恰巧是作为左半部分单出来的, 那么i + sz就是不存在于数组中的元素下标
+    		for (int i = lo; i + sz < hi + 1; i += 2 * sz)
+    		{
+    			//debug...
+    			//System.out.printf("merge: (%d, %d, %d)\n", i, i + sz - 1, Math.min(hi, i + 2 * sz - 1));
+    			//System.out.println(new DoubleLinkedList<>(a));
+
+    			//merge最后两个部分的时候可能出现最后一块的元素个数小于len的情况
+    			merge(a, i, i + sz - 1, Math.min(hi, i + 2 * sz - 1));
+    		}
     }
 
 	/**

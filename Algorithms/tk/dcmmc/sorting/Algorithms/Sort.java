@@ -5,7 +5,7 @@ import java.util.Comparator;
 /**
 * 基类, 扩展出所有的Sort子类
 */
-class Sort {
+public class Sort {
 	/**
 	* 判断v是否小于w
 	* @param v

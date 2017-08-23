@@ -29,9 +29,12 @@ public class SortExample {
 	*			接收符合void sort(Comparable[] a)的方法引用
 	* @param a
 	*			要排序的数组, 排序的大小顺序由a中的compareTo方法实现
+	* @return 排序后的a
 	*/
-	public static void sort(SortFunc sortFunc, Comparable[] a) {
+	public static Comparable[] sort(SortFunc sortFunc, Comparable[] a) {
 		sortFunc.sort(a);
+
+		return a;
 	}
 
 	/**
@@ -191,7 +194,7 @@ public class SortExample {
         String alg1 = "Merge";
         String alg2 = "Insertion";
 
-        int arraySize = 100000;
+        int arraySize = 1000;
         int trials = 1;
 
         double t1, t2;
@@ -200,7 +203,41 @@ public class SortExample {
         	arraySize, alg1, (t2 = timeRandomInput(alg2, arraySize, trials)) / (t1 = timeRandomInput(alg1, arraySize, trials)), 
         	alg2, t1, t2 );
 
-        
+        //test quicksort
+        title("quicksort");
 
-	}
+        Character[] charArr = (Character[])new DoubleLinkedList<>("QUICKSORTEXAMPLE".toCharArray()).toArray();
+
+        System.out.println(new DoubleLinkedList<>(sort(QuickSort::quickSort, charArr)));
+
+        //Ex 2.3.11
+        //测试有大量重复数值的时候quicksort的倍率估算
+        //create array that has a constant number of distinct keys
+        String sssStr = "SSSSSSSS";
+        for (int i = 0; i < 100; i++)
+        	sssStr += "SSSSSSSS";
+
+        //10次测试
+        System.out.printf("    size   time ratio(based on 2)\n");
+
+        charArr = (Character[])new DoubleLinkedList<>(sssStr.toCharArray()).toArray();
+        long start = System.currentTimeMillis();
+        int size = sssStr.length();
+        double timeSecond = 0.0d;
+
+        sort(QuickSort::quickSort, charArr);
+        double lastTime = (System.currentTimeMillis() - start) / 1000.0;
+        System.out.printf("%8d %5.2f\n", size, lastTime);
+
+        for (int i = 1; i < 10; i++) {
+        	sssStr += sssStr;
+        	size *= 2;
+        	charArr = (Character[])new DoubleLinkedList<>(sssStr.toCharArray()).toArray();
+        	start = System.currentTimeMillis();
+        	sort(QuickSort::quickSort, charArr);
+        	timeSecond = (System.currentTimeMillis() - start) / 1000.0;
+        	System.out.printf("%8d %5.2f %5.2f\n", size, lastTime, timeSecond / lastTime);
+        	lastTime = timeSecond;
+		}
+    }
 }///~

@@ -140,10 +140,12 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
 
     /**
     * 返回由DoubleLinkedList表示的数组(FIFO)
+    * @return 返回List中存储的所有引用类型(包装类型)的数组, 因为泛型擦除, 所以调用的时候需要强制把返回的Object[]转化为目标类型(i.e
+    * Item[]), 而且通过构造器DoubleLinkedList(Object array)创建的基本类型List会被转化为引用类型.
     */
     @SuppressWarnings("unchecked")
     public Item[] toArray() {
-        if (first.item == null)
+        if (first == null || first.item == null)
             return null;
 
         Item[] array = (Item[])java.lang.reflect.Array.newInstance(first.item.getClass(), getSize());
@@ -249,9 +251,12 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
      *           要获取的元素的offset, 0 <= offset <= getSize() - 1
      * @return 要获取的元素
      * @throws IndexOutOfBoundsException 如果offset不存在就抛出异常
+     * @throws NoSuchElementException 如果List为空
      */
-    public Item pop(int offset) throws IndexOutOfBoundsException {
+    public Item pop(int offset) throws IndexOutOfBoundsException, NoSuchElementException {
         outOfBoundsCheck(offset);
+        if (getSize() == 0)
+            throw new NoSuchElementException("This DoubleLinkedList is empty!");
 
         int index = 0;
         Node current = first;
@@ -263,8 +268,10 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
                     //如果List只有一个元素
                     if (first.next == null)
                         first = last = null;
-                    else
+                    else {
                         first = first.next;
+                        first.previous = null;
+                    }
                 } else {
                     current.previous.next = current.next;
                 }
@@ -277,8 +284,8 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
             current = current.next;
         }
 
-
-        //如果是last
+        //如果是last(first)
+        //记得减回去
         if (index == offset) {
             //如果只有一个元素
             if (getSize() == 1) {
@@ -304,7 +311,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
      */
     public Item popFirst() {
         if (getSize() == 0)
-            throw new NoSuchElementException("This Deque is empty!");
+            throw new NoSuchElementException("This DoubleLinkedList is empty!");
 
         return pop(0);
     }
@@ -318,7 +325,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
     @SuppressWarnings("unchecked")
     public Item popLast() {
         if (getSize() == 0)
-            throw new NoSuchElementException("This Deque is empty!");
+            throw new NoSuchElementException("This DoubleLinkedList is empty!");
 
         Item lastItem = last.item;
 
@@ -793,7 +800,6 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
 
         //varargs test
         o(new DoubleLinkedList(1, 5, 9, 11));
-
     }
 }///:~
 
