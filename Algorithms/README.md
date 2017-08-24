@@ -19,7 +19,7 @@
 
 #### Algorithms
 
-* [BinarySearch] (.tk/dcmmc/fundamentals/Algorithms/BinarySearch.java)
+* [BinarySearch](.tk/dcmmc/fundamentals/Algorithms/BinarySearch.java)
 
 * [Euclid's algorithm](./tk/dcmmc/fundamentals/Algorithms/EuclidGCD.java): Computer the GCD(Greatest Common Divisor) of two nonzero integers.
 
