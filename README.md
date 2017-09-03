@@ -13,6 +13,15 @@
 
 ---
 
+# 类别(classification)
+
+* [Algorithms](./Algorithms)
+* [Design Patterns](./Patterns)
+* [Java Syntax](./Syntax)
+* [Tools](./Tools)
+
+---
+
 ## 参考书籍(Reference books):
 
 *Thinking to Java 4th Edition* //里面涉及了很多设计模式相关的知识, 用作入门书还行, 不过书中设计模式相关的东西看起来就会有点吃力
