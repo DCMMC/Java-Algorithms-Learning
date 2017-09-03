@@ -87,8 +87,19 @@ class PriorityQueueEx {
 		//Ex 2.4.10
 		// floor((k + 1) / 2) - 1
 
-		
+		//Ex 2.4.12
+		//heap > sorted array > unsorted array
 
+		//Ex 2.4.13
+		//change k * 2 to k * 2 + 1 在while后面做一次k是否为 N / 2的判断, 这样能都在比较高的数的sink下减少对j的边界检查
+
+		//Ex 2.4.15
+		//从N/2位置从右往左开始sink, 类似于heapsort的O(N)的那个reheapifying的实现
+
+		//Ex 2.4.17
+		//N - k次replace the minimum就相当于去掉了N - k个最小的元素, 剩下了k个最大的元素
+
+		//
 
 		//Ex Ex 2.4.33 IndexMinPQ
 		title("Ex 2.4.33");
