@@ -91,19 +91,37 @@ class PriorityQueueEx {
 		//heap > sorted array > unsorted array
 
 		//Ex 2.4.13
-		//change k * 2 to k * 2 + 1 在while后面做一次k是否为 N / 2的判断, 这样能都在比较高的数的sink下减少对j的边界检查
+		//change k * 2 to k * 2 + 1 在while语句块后面做一次k是否为 N / 2的判断, 这样能都减少对j的边界检查
 
 		//Ex 2.4.15
 		//从N/2位置从右往左开始sink, 类似于heapsort的O(N)的那个reheapifying的实现
+		//或者递归判断也可以
 
 		//Ex 2.4.17
 		//N - k次replace the minimum就相当于去掉了N - k个最小的元素, 剩下了k个最大的元素
 
-		//
+		//Ex 2.4.18
+		//如果insert和remove the max这两个操作的路径完全一样, 就不会有变化
+		//所以在高度大于等于4的树两个情况都有可能, 树高小于等于3的话, 肯定不会有变化(因为第二层有一个原来的max, 会引导remove的path
+		//还是跟insert一样)
+
+		//Ex 2.4.19
+		//见到MaxPQ中的构造器
+
+		//Ex 2.4.20
+		//见(https://github.com/DCMMC/Markdown_Notes/blob/master/%E7%AE%97%E6%B3%95%20Algorithm.md)中的排序算法->Priority Queue
+		//->Heapsort中相关简证.
+
+		/* Create Problems */
+		
+		//Ex 2.4.23
 
 		//Ex Ex 2.4.33 IndexMinPQ
 		title("Ex 2.4.33");
 
-		IndexMinPQ.main();
+		IndexMinPQ.main(null);
+
+		/* Experiments */
+
 	}
 }///~

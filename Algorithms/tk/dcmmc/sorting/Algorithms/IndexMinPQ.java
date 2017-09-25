@@ -195,13 +195,15 @@ public class IndexMinPQ<Key extends Comparable<Key>> {
 	/**
 	* exch
 	* 交换pq中i和j位置上存储的信息, 同时相应的对qp中的元素交换
-	* @param i 1 <= i <= size
-	* @param j 1 <= j <= size
+	* @param i 序号 1 <= i <= size
+	* @param j 序号 1 <= j <= size
 	*/
 	private void exch(int i, int j) {
+		//先把qp中记录的元素交换, 也就是把qp中记录着keys中这两个元素的index在pq存储的位置的值先交换
 		qp[pq[i]] = j;
 		qp[pq[i]] = i;
 
+		//将pq中继续的这两个index给互换
 		int tmp = pq[i];
 		pq[i] = pq[j];
 		pq[j] = tmp;
@@ -264,7 +266,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> {
 	/**
 	* test client
 	* multiway merge with O(NlogM) time (N为所有ways个数组的元素之和, M为ways的大小, 和我在MergeSort那一节实现的
-	* 方法是差不多的效率)
+	* 方法是差不多的效率), 而且space Complexity是O(1), 可以说这个merge是很优秀的了
 	* @param args 
 	*			commaneline arguments
 	*/

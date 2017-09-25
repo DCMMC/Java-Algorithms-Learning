@@ -46,6 +46,8 @@ public class MaxPQ<Key extends Comparable<Key>> {
 	}
 
 	/**
+	* Ex 2.4.19
+	* bottom-up heap constructor
 	* create a priority queue from the keys in a[]
 	* @param a
 	*		initial keys

@@ -56,6 +56,22 @@ class HeapSort {
 		//所以总的比较次数要少于2NlogN + 2N, 交换次数少于NlogN + N
 	}
 
+	/**
+	* Floyd优化版本
+	* 只在comparisons比较耗时的情况下有性能提升, 譬如String的比较
+	*/
+	public static void heapsortFloyd(Comparable[] a) {
+		int N = a.length;
+
+		for (int k = N / 2; k >= 1; k--)
+			sink(a, k, N);
+
+		while (N > 1) {
+			exch(a, 1, N--);
+			sinkFloyd(a, 1, N);
+		}
+	}
+
 	/* Private method */
 
 	/**
@@ -116,8 +132,25 @@ class HeapSort {
 			if (!less(a, k, j)) 
 				break;
 			exch(a, k, j);
-				k = j;
+			k = j;
 		}
+	}
+
+	/**
+	* sink improved by Floyd (1964)
+	* 一直与children中较大的那个交换直到没有children.
+	*/
+	private static void sinkFloyd(Comparable[] a, int k, int N) {
+		//其左边那个子节点要存在, 不然的话就已经到了heap的bottom了
+		while (k * 2 <= N) {
+			int j = 2 * k;
+			if (j < N && less(a, j, j + 1))
+				++j;
+			exch(a, k, j);
+			k = j;
+		}
+
+		swim(a, k);
 	}
 
 
@@ -135,5 +168,10 @@ class HeapSort {
 
 		System.out.println(new DoubleLinkedList<>(test));
 
+		String[] strTest = {"hello", "hell", "world", "war"};
+
+		heapsortFloyd(strTest);
+		
+		System.out.println(new DoubleLinkedList<>(strTest));
 	}
 }///~
