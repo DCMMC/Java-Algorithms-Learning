@@ -94,14 +94,14 @@ runJava.sh:
 for file in $1.java
 do
   echo "Compiling $file......"
-  javac $file
+  javac -encoding UTF-8 $file
 done
 if [ -f "$1.class"]
 then
   echo "------Output------"
 # 进入到脚本所在的目录
   cd `dirname $0`
-   java LoadAnyClasses $1
+   java -classpath "." LoadAnyClasses $1.class
 else
   echo " "
 fi
