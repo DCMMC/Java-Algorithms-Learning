@@ -76,8 +76,8 @@ public class LoadAnyClasses {
 
 
         /*******************************************
-        * Methods                                  *
-        *******************************************/
+         * Methods                                  *
+         *******************************************/
 
         /**
          *  根据filePath指定的文件绝对路径加载class文件
@@ -584,13 +584,20 @@ public class LoadAnyClasses {
                 Class<?> cls;
 
                 //判断是否位于系统CLASSPATH下
-                String classpath;
-                if ((classpath = Loader.locatedClasspath(args[0])) != null) {
+                String classpath = null;
+                try {
+                    classpath = Loader.locatedClasspath(args[0]);
+                } catch (NullPointerException ne) {
+                    //...
+                    //就是空的classpath吧
+                }
+
+                if (classpath != null) {
                     String classFullName =
                             args[0].replace(classpath.charAt(classpath.length() - 1) == File.separatorChar
                                     ? classpath : classpath.concat(File.separator), "");
                     classFullName = classFullName.replaceAll(File.separatorChar == '\\'
-                                    ? "\\\\" : File.separator, ".");
+                            ? "\\\\" : File.separator, ".");
                     classFullName = classFullName.replaceAll("(?m)\\.class$", "");
 
                     try {
@@ -624,7 +631,7 @@ public class LoadAnyClasses {
             } catch (IOException ioe) {
                 throw new RuntimeException("参数指定的文件不存在或者权限不足!", ioe);
             } catch (ClassNotFoundException ce) {
-                throw new RuntimeException("找不到指定的Class!");
+                throw new RuntimeException("找不到指定的Class：" + args[0]);
             } catch (Exception e) {
                 //重抛
                 System.out.println("发生了一些意想不到的异常...");
@@ -719,3 +726,4 @@ public class LoadAnyClasses {
     }
 
 }///~
+

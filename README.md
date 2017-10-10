@@ -90,18 +90,28 @@ Linux/macOS:
 runJava.sh:
 
 ``` bash
+# Linux/macOS下的$1都是包括了扩展名了
 [ -f "$1.class" ] && rm $1.class
-for file in $1.java
+# fullDir=$(pwd)
+# fullPath=${fullDir}"/$1.class"
+# for file in $1.java
+for file in $1
 do
+# echo "Compiling "${fullPath}"/$file......"
   echo "Compiling $file......"
-  javac -encoding UTF-8 $file
+  javac -encoding "utf-8" $file
 done
-if [ -f "$1.class"]
+var=$1
+name=${var%%.java}
+#if [ -f "$1.class" ]
+if [ -f ${name}".class" ]
 then
+  chmod 755 ${name}".class"
   echo "------Output------"
 # 进入到脚本所在的目录
-  cd `dirname $0`
-   java -classpath "." LoadAnyClasses $1.class
+  cd `dirname $0`
+# java -classpath "." LoadAnyClasses ${fullPath}
+  java -classpath "." LoadAnyClasses ${name}".class"
 else
   echo " "
 fi
@@ -144,6 +154,7 @@ MyJava_SublimeConsole.sublime-build:
 ```
 
 > 因为Sublime Text3保存源码的默认格式是UTF-8，所以需要将"encoding": 设置为GBK
+> 记得在Linux/macOS下改成UTF-8！！！
 
 ### 重新打开Sublime Text3, 在Tools -> Build System中选择要用的编译脚本, 按Ctril+B编译运行.
 
