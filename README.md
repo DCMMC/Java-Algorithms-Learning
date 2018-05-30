@@ -1,6 +1,5 @@
 # Java Learning
 
-[![npm](https://img.shields.io/npm/l/express.svg)](./LICENSE)
 ![StillCoding](https://img.shields.io/badge/Still-Coding-green.svg)
 ![Java入门](https://img.shields.io/badge/Java-%E5%85%A5%E9%97%A8-blue.svg)
 ![WeChatID](https://img.shields.io/badge/WeChat-Kevin--0220-red.svg)
