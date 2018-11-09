@@ -14,7 +14,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 /**
  * 目前存在一个问题: 用LoadAnyClass得到的Class对象是没有包名的, 也就是getPackage()返回null
- * 解决部分: 虽然首次通过LoadAnyClasses加载会丢失包名信息, 不过如果在运行中继续加载和LoadAnyClasses
+ * 解决部分: 虽然首次通过LoadAnyClasses加载会丢失包名信息, 不过如果在运行中继续加载和LoadAnyClass
  * 首次加载的那个Class处于相同的CLASSPATH(前提是首次加载的class位于系统CLASSPATH目录树下), 那么以后
  * 加载出来的就能有包名信息了.
  * 会判断要加载的class是否位于系统CLASSPATH目录树下, 如果位于的话就用URLClassLoader加载出有包名信息的类.
@@ -638,10 +638,6 @@ public class LoadAnyClass {
                 throw new RuntimeException(e);
             }
         }
-
-
-
-
     }
 
     /**
@@ -701,11 +697,11 @@ public class LoadAnyClass {
             //最好用Class.getConstructor(parameters)来获得构造器, 然后获得权限,
             //最后用Constructor.newInstance()获得实例对象
 
-            Constructor<LoadAnyClasses> constructor = LoadAnyClasses.class.getConstructor();
+            Constructor<LoadAnyClass> constructor = LoadAnyClass.class.getConstructor();
             if(!constructor.isAccessible())
                 constructor.setAccessible(true);
 
-            LoadAnyClasses.class.getDeclaredMethod("varargsFoo", String[].class)
+            LoadAnyClass.class.getDeclaredMethod("varargsFoo", String[].class)
                     .invoke(constructor.newInstance(),
                             new Object[]{new String[]{"Hello", "World"}});
 

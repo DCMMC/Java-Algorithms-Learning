@@ -265,8 +265,6 @@ public class IndexMinPQ<Key extends Comparable<Key>> {
 
 	/**
 	* test client
-	* multiway merge with O(NlogM) time (N为所有ways个数组的元素之和, M为ways的大小, 和我在MergeSort那一节实现的
-	* 方法是差不多的效率), 而且space Complexity是O(1), 可以说这个merge是很优秀的了
 	* @param args 
 	*			commaneline arguments
 	*/

@@ -109,15 +109,15 @@ class PriorityQueueEx {
 		//见到MaxPQ中的构造器
 
 		//Ex 2.4.20
-		//见(https://github.com/DCMMC/Markdown_Notes/blob/master/%E7%AE%97%E6%B3%95%20Algorithm.md)中的排序算法->Priority Queue
+		//见(https://github.com/DCMMC/Notes/blob/master/%E7%AE%97%E6%B3%95%20Algorithm.md)中的排序算法->Priority Queue
 		//->Heapsort中相关简证.
 
 		/* Create Problems */
 		
 		//Ex 2.4.23
 
-		//Ex Ex 2.4.33 IndexMinPQ
-		title("Ex 2.4.33");
+		//Ex Ex 2.4.33 2.4.34 IndexMinPQ
+		title("Ex 2.4.33 2.4.34");
 
 		IndexMinPQ.main(null);
 

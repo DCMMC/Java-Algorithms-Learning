@@ -49,7 +49,6 @@ class Mergesort {
 
 			last = a[i];
 		}
-
 		return true;
 	}
 
