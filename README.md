@@ -2,13 +2,12 @@
 
 ![StillCoding](https://img.shields.io/badge/Still-Coding-green.svg)
 ![Java入门](https://img.shields.io/badge/Java-%E5%85%A5%E9%97%A8-blue.svg)
-![WeChatID](https://img.shields.io/badge/WeChat-Kevin--0220-red.svg)
 
 **Star me if you like it!**
 
-> 欢迎想和我讨论关于一下书籍的内容的人给我提Issues, 当然也可以和我qq交流(97294597).
+> 欢迎想和我讨论关于一下书籍的内容的人给我提Issues.
 >
-> Welcome to discuss with me about the contents of the books below, you can add an issue or chat with me in QQ(97294597). :)
+> Welcome to discuss with me about the contents of the books below. :)
 
 ---
 
